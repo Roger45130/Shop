@@ -40,7 +40,9 @@ if (isset($_POST['submit']) && $_SERVER['REQUEST_METHOD'] === 'POST') {
   if(empty($_POST['password'])){
     $errorPassword = '<small class="text-color-danger">Merci de saisir un mot de passe.</small>';
   }elseif(!preg_match($password_regex, $_POST['password'])){
-    $errorPassword = '<small class="text-color-danger">8 caractères minimum : 1 majuscule, 1 minuscule, 1 chiffre et 1 caractère spécial (?=.*?[#?!@$%^&*-]).</small>';
+    $errorPassword = '<small class="text-color-danger">8 caractères minimum : 1 majuscule, 1 minuscule, 1 chiffre et 1 caractère spécial (#?!@$%^&*-).</small>';
+  }elseif($_POST['password'] !== $_POST['repeat_password']){
+    $errorPassword = '<small class="text-color-danger">Les mots de passe ne correspondent pas.</small>';
   }
 }
 
