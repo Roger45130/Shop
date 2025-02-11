@@ -23,8 +23,11 @@ if (isset($_POST['submit']) && $_SERVER['REQUEST_METHOD'] === 'POST') {
   $data->bindValue(':email', $_POST['email'], PDO::PARAM_STR);
   $data->execute();
 
-  // Affichage du nombre de résultats trouvés
-  echo $data->rowCount();
+  // echo $data->rowCount();
+  // Si la condition IF retourne TRUE, l'email est existant en BDD, on entre dans le IF.
+  if($data->rowCount()){
+    $errorEmail = '<small class="text-color-danger">Un compte est déjà existant à cette adresse email.</small>';
+  }
 }
 
 
@@ -131,7 +134,8 @@ require_once('include/header.php');
                         <fieldset>
                             <input type="text" placeholder="Enter votre prénom" name="firstName" value="<?= htmlspecialchars($firstName ?? '') ?>" />
                             <input type="text" placeholder="Enter votre nom" name="lastName" value="<?= htmlspecialchars($lastName ?? '') ?>" />
-                            <input type="email" placeholder="Entrez votre adresse e-mail" name="email" value="<?= htmlspecialchars($email ?? '') ?>" />
+                            <?php if(isset($errorEmail)) echo $errorEmail; ?>
+                            <input type="email" placeholder="Entrez votre adresse e-mail" name="email" class="<?php if(isset($errorEmail)) echo 'border-danger'; ?>" />
                             <input type="text" placeholder="Entrer votre adresse" name="address" value="<?= htmlspecialchars($address ?? '') ?>" />
                             <input type="text" placeholder="Entrer votre ville" name="city" value="<?= htmlspecialchars($city ?? '') ?>"/>
                             <input type="text" placeholder="Entrer votre code postal" name="zipcode" value="<?= htmlspecialchars($zipcode ?? '') ?>" />
