@@ -13,70 +13,80 @@ $connect_db = new PDO('mysql:host=localhost;dbname=shop', 'root', '', [
   PDO::ATTR_ERRMODE => PDO::ERRMODE_WARNING,
   PDO::MYSQL_ATTR_INIT_COMMAND => 'SET NAMES utf8'
 ]);
-
+//1.  Contrôler que l'on réceptionne bien toute les données saisie dans le formulaire en PHP.
 echo '<pre>'; print_r($_POST); echo '</pre>';
 
-$erreur = [];
-$success_message = "";
+if(isset($_POST['submit']) && $_SERVER['RESQUET_METHOD'] === 'POST'){
+  //2.  Contrôler la validité de l'email (select + rowCount).
+  // On sélectionne tous dans la BDD à condition que la colonne email dans la BDD soit égale à l'email saisi dans le formulaire.
+  $data = connect_db->prepare("SELECT * FROM user WHERE email = :email");
+  $data->bindValue(':email', $_POST['email'], PSO::PARAM_STR);
+  $data->execute();
 
-// Traitement du formulaire lorsqu'il est soumis
-if ($_SERVER['REQUEST_METHOD'] === 'POST') {
-  // Récupération des données du formulaire
-  $firstName = trim($_POST['firstName'] ?? '');
-  $lastName = trim($_POST['lastName'] ?? '');
-  $email = trim($_POST['email'] ?? '');
-  $address = trim($_POST['address'] ?? '');
-  $city = trim($_POST['city'] ?? '');
-  $zipcode = trim($_POST['zipcode'] ?? '');
-  $password = trim($_POST['password'] ?? '');
-  $repeat_password = trim($_POST['repeat_password'] ?? '');
-
-  // 1. Vérification des champs obligatoires
-  if (empty($firstName)) $erreur[] = "Le prénom est requis.";
-  if (empty($lastName)) $erreur[] = "Le nom est requis.";
-  if (empty($address)) $erreur[] = "L'adresse est requise.";
-  if (empty($city)) $erreur[] = "La ville est requise.";
-  if (empty($zipcode)) $erreur[] = "Le code postal est requis.";
-
-  // 2. Contrôle du champ email
-  if (empty($email)) {
-      $erreur[] = "L'adresse e-mail est requise.";
-  } elseif (!filter_var($email, FILTER_VALIDATE_EMAIL)) {
-      $erreur[] = "L'adresse e-mail est invalide.";
-  } else {
-      // Vérification si l'email existe déjà dans la base de données
-      $query = $connect_db->prepare("SELECT id_user FROM user WHERE email = :email");
-      $query->execute(['email' => $email]);
-
-      if ($query->rowCount() > 0) {
-          $erreur[] = "Cette adresse e-mail est déjà reliée à un utilisateur. Veuillez en saisir une autre.";
-      }
-  }
-
-  // 3. Contrôle du champ mot de passe
-  if (empty($password)) {
-      $erreur[] = "Le mot de passe est requis.";
-  }
-
-  // 4. Vérification que les mots de passe correspondent
-  if (!empty($password) && !empty($repeat_password) && $password !== $repeat_password) {
-      $erreur[] = "Les mots de passe ne correspondent pas.";
-  }
-
-  // 5. Si aucune erreur, insérer les données dans la base de données
-  if (empty($erreur)) {
-      $hashed_password = password_hash($password, PASSWORD_DEFAULT);
-
-      // Requête d'insertion dans la table `user`
-      $insert_query = $connect_db->prepare(
-          "INSERT INTO user (firstName, lastName, email, address, city, zipcode, password) VALUES (:firstName, :lastName, :email, :address, :city, :zipcode, :password)"
-      );
-
-      $insert_query->execute(['firstName' => $firstName, 'lastName' => $lastName, 'email' => $email, 'address' => $address, 'city' => $city, 'zipcode' => $zipcode,'password' => $hashed_password]);
-
-      $success_message = "Votre compte a été créé avec succès.";
-  }
+  echo $data->rowCount();
 }
+
+// $erreur = [];
+// $success_message = "";
+
+// // Traitement du formulaire lorsqu'il est soumis
+// if ($_SERVER['REQUEST_METHOD'] === 'POST') {
+//   // Récupération des données du formulaire
+//   $firstName = trim($_POST['firstName'] ?? '');
+//   $lastName = trim($_POST['lastName'] ?? '');
+//   $email = trim($_POST['email'] ?? '');
+//   $address = trim($_POST['address'] ?? '');
+//   $city = trim($_POST['city'] ?? '');
+//   $zipcode = trim($_POST['zipcode'] ?? '');
+//   $password = trim($_POST['password'] ?? '');
+//   $repeat_password = trim($_POST['repeat_password'] ?? '');
+
+//   // 1. Vérification des champs obligatoires
+//   if (empty($firstName)) $erreur[] = "Le prénom est requis.";
+//   if (empty($lastName)) $erreur[] = "Le nom est requis.";
+//   if (empty($address)) $erreur[] = "L'adresse est requise.";
+//   if (empty($city)) $erreur[] = "La ville est requise.";
+//   if (empty($zipcode)) $erreur[] = "Le code postal est requis.";
+
+//   // 2. Contrôle du champ email
+//   if (empty($email)) {
+//       $erreur[] = "L'adresse e-mail est requise.";
+//   } elseif (!filter_var($email, FILTER_VALIDATE_EMAIL)) {
+//       $erreur[] = "L'adresse e-mail est invalide.";
+//   } else {
+//       // Vérification si l'email existe déjà dans la base de données
+//       $query = $connect_db->prepare("SELECT id_user FROM user WHERE email = :email");
+//       $query->execute(['email' => $email]);
+
+//       if ($query->rowCount() > 0) {
+//           $erreur[] = "Cette adresse e-mail est déjà reliée à un utilisateur. Veuillez en saisir une autre.";
+//       }
+//   }
+
+//   // 3. Contrôle du champ mot de passe
+//   if (empty($password)) {
+//       $erreur[] = "Le mot de passe est requis.";
+//   }
+
+//   // 4. Vérification que les mots de passe correspondent
+//   if (!empty($password) && !empty($repeat_password) && $password !== $repeat_password) {
+//       $erreur[] = "Les mots de passe ne correspondent pas.";
+//   }
+
+//   // 5. Si aucune erreur, insérer les données dans la base de données
+//   if (empty($erreur)) {
+//       $hashed_password = password_hash($password, PASSWORD_DEFAULT);
+
+//       // Requête d'insertion dans la table `user`
+//       $insert_query = $connect_db->prepare(
+//           "INSERT INTO user (firstName, lastName, email, address, city, zipcode, password) VALUES (:firstName, :lastName, :email, :address, :city, :zipcode, :password)"
+//       );
+
+//       $insert_query->execute(['firstName' => $firstName, 'lastName' => $lastName, 'email' => $email, 'address' => $address, 'city' => $city, 'zipcode' => $zipcode,'password' => $hashed_password]);
+
+//       $success_message = "Votre compte a été créé avec succès.";
+//   }
+// }
 
 require_once('include/header.php');
 ?>
