@@ -9,12 +9,18 @@ require_once('include/init.php');
     5.  Afficher un message si le champs mot de passe est vide.
     6.  Contrôler que les mots de passe correspondent.
 */
+$connect_db = new PDO('mysql:host=localhost;dbname=shop', 'root', '', [
+  PDO::ATTR_ERRMODE => PDO::ERRMODE_WARNING,
+  PDO::MYSQL_ATTR_INIT_COMMAND => 'SET NAMES utf8'
+]);
 
-$erreur =[];
-$succes_message ="";
+$erreur = [];
+$success_message = "";
 
-if ($_SERVER['RESQUEST_METHOD'] == 'POST'){
-  $firstName = trim($_POST['firstname'] ?? '');
+// Traitement du formulaire lorsqu'il est soumis
+if ($_SERVER['REQUEST_METHOD'] === 'POST') {
+  // Récupération des données du formulaire
+  $firstName = trim($_POST['firstName'] ?? '');
   $lastName = trim($_POST['lastName'] ?? '');
   $email = trim($_POST['email'] ?? '');
   $address = trim($_POST['address'] ?? '');
@@ -23,32 +29,53 @@ if ($_SERVER['RESQUEST_METHOD'] == 'POST'){
   $password = trim($_POST['password'] ?? '');
   $repeat_password = trim($_POST['repeat_password'] ?? '');
 
-  if(empty($firstName)) $erreur[] = 'Saisir un prénom';
-  if(empty($lastName)) $erreur[] = 'Saisir un nom';
-  if(empty($email)) $erreur[] = 'Saisir un email';
-  if(empty($address)) $erreur[] = 'Saisir une adresse';
-  if(empty($city)) $erreur[] = 'Saisir une ville';
-  if(empty($zipcode)) $erreur[] = 'Saisir un code postal';
-  if(empty($password)) $erreur[] = 'Saisir un mot de passe';
-  if(empty($repeat_password)) $erreur[] = 'La confirmation du mot de passe est requise';
+  // 1. Vérification des champs obligatoires
+  if (empty($firstName)) $erreur[] = "Le prénom est requis.";
+  if (empty($lastName)) $erreur[] = "Le nom est requis.";
+  if (empty($address)) $erreur[] = "L'adresse est requise.";
+  if (empty($city)) $erreur[] = "La ville est requise.";
+  if (empty($zipcode)) $erreur[] = "Le code postal est requis.";
 
-  if (!empty($email) && !filter_var($email, FILTER_VALIDATE_EMAIL)) {
-    $erreur[] = "L'adresse e-mail est invalide.";
+  // 2. Contrôle du champ email
+  if (empty($email)) {
+      $erreur[] = "L'adresse e-mail est requise.";
+  } elseif (!filter_var($email, FILTER_VALIDATE_EMAIL)) {
+      $erreur[] = "L'adresse e-mail est invalide.";
+  } else {
+      // Vérification si l'email existe déjà dans la base de données
+      $query = $connect_db->prepare("SELECT id_user FROM user WHERE email = :email");
+      $query->execute(['email' => $email]);
+
+      if ($query->rowCount() > 0) {
+          $erreur[] = "Cette adresse e-mail est déjà reliée à un utilisateur. Veuillez en saisir une autre.";
+      }
   }
 
+  // 3. Contrôle du champ mot de passe
+  if (empty($password)) {
+      $erreur[] = "Le mot de passe est requis.";
+  }
+
+  // 4. Vérification que les mots de passe correspondent
+  if (!empty($password) && !empty($repeat_password) && $password !== $repeat_password) {
+      $erreur[] = "Les mots de passe ne correspondent pas.";
+  }
+
+  // 5. Si aucune erreur, insérer les données dans la base de données
   if (empty($erreur)) {
-    try {
-        $query = $db->prepare("SELECT id FROM users WHERE email = :email");
-        $query->execute(['email' => $email]);
-        if ($query->rowCount() > 0) {
-            $erreur[] = "Cette adresse e-mail est déjà utilisée. Veuillez en choisir une autre.";
-        }
-    } catch (PDOException $e) {
-        $erreur[] = "Une erreur est survenue lors de la vérification de l'email.";
-    }
-  }
+      $hashed_password = password_hash($password, PASSWORD_DEFAULT);
 
+      // Requête d'insertion dans la table `user`
+      $insert_query = $connect_db->prepare(
+          "INSERT INTO user (firstName, lastName, email, address, city, zipcode, password) VALUES (:firstName, :lastName, :email, :address, :city, :zipcode, :password)"
+      );
+
+      $insert_query->execute(['firstName' => $firstName, 'lastName' => $lastName, 'email' => $email, 'address' => $address, 'city' => $city, 'zipcode' => $zipcode,'password' => $hashed_password]);
+
+      $success_message = "Votre compte a été créé avec succès.";
+  }
 }
+
 require_once('include/header.php');
 ?>
   <!-- inner page section -->
@@ -65,61 +92,45 @@ require_once('include/header.php');
   </section>
   <!-- end inner page section -->
   <!-- why section -->
-  <section class="why_section layout_padding">
+  <!-- why section -->
+<section class="why_section layout_padding">
     <div class="container">
-      <div class="row">
-        <div class="col-lg-8 offset-lg-2">
-          <div class="full">
-            <form action="">
-              <fieldset>
-                <input
-                  type="text"
-                  placeholder="Enter votre prénom"
-                  name="firstName"
-                  required />
-                <input
-                  type="text"
-                  placeholder="Enter votre nom"
-                  name="lastName"
-                  required />
-                <input
-                  type="text"
-                  placeholder="Entrez votre adresse e-mail"
-                  name="email"
-                  required />
-                <input
-                  type="text"
-                  placeholder="Entrer votre adresse"
-                  name="address"
-                  required />
-                <input
-                  type="text"
-                  placeholder="Entrer votre ville"
-                  name="city"
-                  required />
-                <input
-                  type="text"
-                  placeholder="Entrer votre code postal"
-                  name="zipcode"
-                  required />
-                <input
-                  type="password"
-                  placeholder="Enter votre mot de passe"
-                  name="subject"
-                  required />
-                <input
-                  type="repeat_password"
-                  placeholder="Répétez votre mot de passe"
-                  name="subject"
-                  required />
-                <input type="submit" value="Submit" />
-              </fieldset>
-            </form>
-          </div>
+        <div class="row">
+            <div class="col-lg-8 offset-lg-2">
+                <div class="full">
+
+                    <?php if (!empty($erreur)): ?>
+                        <div class="alert alert-danger">
+                            <ul>
+                                <?php foreach ($erreur as $erreur): ?>
+                                    <?= htmlspecialchars($erreur) ?>
+                                <?php endforeach; ?>
+                            </ul>
+                        </div>
+                    <?php endif; ?>
+                    <?php if (!empty($succes_message)): ?>
+                        <div class="alert alert-success">
+                            <?= htmlspecialchars($succes_message) ?>
+                        </div>
+                    <?php endif; ?>
+                    <form action="" method="POST">
+                        <fieldset>
+                            <input type="text" placeholder="Enter votre prénom" name="firstName" value="<?= htmlspecialchars($firstName ?? '') ?>" />
+                            <input type="text" placeholder="Enter votre nom" name="lastName" value="<?= htmlspecialchars($lastName ?? '') ?>" />
+                            <input type="email" placeholder="Entrez votre adresse e-mail" name="email" value="<?= htmlspecialchars($email ?? '') ?>" />
+                            <input type="text" placeholder="Entrer votre adresse" name="address" value="<?= htmlspecialchars($address ?? '') ?>" />
+                            <input type="text" placeholder="Entrer votre ville" name="city" value="<?= htmlspecialchars($city ?? '') ?>" required />
+                            <input type="text" placeholder="Entrer votre code postal" name="zipcode" value="<?= htmlspecialchars($zipcode ?? '') ?>" />
+                            <input type="password" placeholder="Enter votre mot de passe" name="password" />
+                            <input type="password" placeholder="Répétez votre mot de passe" name="repeat_password" />
+                            <input type="submit" value="Créer un compte" />
+                        </fieldset>
+                    </form>
+                </div>
+            </div>
         </div>
-      </div>
     </div>
-  </section>
+</section>
   <!-- end why section -->
   <!-- arrival section -->
   <!-- end arrival section -->
