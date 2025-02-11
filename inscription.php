@@ -1,6 +1,6 @@
 <?php
 require_once('include/init.php');
-
+// git add --all && git commit -m 'Sixth version shop demo' && git push origin develop
 /*
     1.  Contrôler que l'on réceptionne bien toute les données saisie dans le formulaire en PHP.
     2.  Contrôler la validité de l'email (select + rowCount).
