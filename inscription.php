@@ -32,6 +32,16 @@ if (isset($_POST['submit']) && $_SERVER['REQUEST_METHOD'] === 'POST') {
   }elseif(!filter_var($_POST['email'], FILTER_VALIDATE_EMAIL)){
     $errorEmail = '<small class="text-color-danger">Merci de saisir une adresse email valide. (ex.: exemple@gmail.com</small>';
   }
+
+  $password_regex = "/^(?=.*?[A-Z])(?=.*?[a-z])(?=.*?[0-9])(?=.*?[#?!@$%^&*-]).{8,}$/"; 
+  echo preg_match($password_regex, 'secret'); // returns 0
+  echo preg_match($password_regex, '-Secr3t.'); // returns 1
+
+  if(empty($_POST['password'])){
+    $errorPassword = '<small class="text-color-danger">Merci de saisir un mot de passe.</small>';
+  }elseif(!preg_match($password_regex, $_POST['password'])){
+    $errorPassword = '<small class="text-color-danger">8 caractères minimum : 1 majuscule, 1 minuscule, 1 chiffre et 1 caractère spécial (?=.*?[#?!@$%^&*-]).</small>';
+  }
 }
 
 
@@ -139,12 +149,12 @@ require_once('include/header.php');
                             <input type="text" placeholder="Enter votre prénom" name="firstName" value="<?= htmlspecialchars($firstName ?? '') ?>" />
                             <input type="text" placeholder="Enter votre nom" name="lastName" value="<?= htmlspecialchars($lastName ?? '') ?>" />
                             <?php if(isset($errorEmail)) echo $errorEmail; ?>
-                            <input type="email" placeholder="Entrez votre adresse e-mail" name="email" class="<?php if(isset($errorEmail)) echo 'border-danger'; ?>" />
-                            value="<?php if(isset($_POST['email'])) echo $_POST['email'] ?>"
+                            <input type="email" placeholder="Entrez votre adresse e-mail" name="email" class="<?php if(isset($errorEmail)) echo 'border-danger'; ?>" value="<?php if(isset($_POST['email'])) echo $_POST['email']; ?>"/>
                             <input type="text" placeholder="Entrer votre adresse" name="address" value="<?= htmlspecialchars($address ?? '') ?>" />
                             <input type="text" placeholder="Entrer votre ville" name="city" value="<?= htmlspecialchars($city ?? '') ?>"/>
                             <input type="text" placeholder="Entrer votre code postal" name="zipcode" value="<?= htmlspecialchars($zipcode ?? '') ?>" />
-                            <input type="password" placeholder="Enter votre mot de passe" name="password" />
+                            <?php if(isset($errorPassword)) echo $errorPassword; ?>
+                            <input type="password" placeholder="Enter votre mot de passe" name="password" class="<?php if(isset($errorPassword)) echo 'border-danger'; ?>"/>
                             <input type="password" placeholder="Répétez votre mot de passe" name="repeat_password" />
                             <input type="submit" name="submit" value="Créer un compte" />
                         </fieldset>
