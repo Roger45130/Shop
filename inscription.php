@@ -16,15 +16,17 @@ $connect_db = new PDO('mysql:host=localhost;dbname=shop', 'root', '', [
 //1.  Contrôler que l'on réceptionne bien toute les données saisie dans le formulaire en PHP.
 echo '<pre>'; print_r($_POST); echo '</pre>';
 
-if(isset($_POST['submit']) && $_SERVER['RESQUET_METHOD'] === 'POST'){
-  //2.  Contrôler la validité de l'email (select + rowCount).
-  // On sélectionne tous dans la BDD à condition que la colonne email dans la BDD soit égale à l'email saisi dans le formulaire.
-  $data = connect_db->prepare("SELECT * FROM user WHERE email = :email");
-  $data->bindValue(':email', $_POST['email'], PSO::PARAM_STR);
+if (isset($_POST['submit']) && $_SERVER['REQUEST_METHOD'] === 'POST') {
+  // 2. Contrôle de la validité de l'email (select + rowCount).
+  // Sélection dans la BDD de l'utilisateur avec l'email saisi dans le formulaire.
+  $data = $connect_db->prepare("SELECT * FROM user WHERE email = :email");
+  $data->bindValue(':email', $_POST['email'], PDO::PARAM_STR);
   $data->execute();
 
+  // Affichage du nombre de résultats trouvés
   echo $data->rowCount();
 }
+
 
 // $erreur = [];
 // $success_message = "";
@@ -131,11 +133,11 @@ require_once('include/header.php');
                             <input type="text" placeholder="Enter votre nom" name="lastName" value="<?= htmlspecialchars($lastName ?? '') ?>" />
                             <input type="email" placeholder="Entrez votre adresse e-mail" name="email" value="<?= htmlspecialchars($email ?? '') ?>" />
                             <input type="text" placeholder="Entrer votre adresse" name="address" value="<?= htmlspecialchars($address ?? '') ?>" />
-                            <input type="text" placeholder="Entrer votre ville" name="city" value="<?= htmlspecialchars($city ?? '') ?>" required />
+                            <input type="text" placeholder="Entrer votre ville" name="city" value="<?= htmlspecialchars($city ?? '') ?>"/>
                             <input type="text" placeholder="Entrer votre code postal" name="zipcode" value="<?= htmlspecialchars($zipcode ?? '') ?>" />
                             <input type="password" placeholder="Enter votre mot de passe" name="password" />
                             <input type="password" placeholder="Répétez votre mot de passe" name="repeat_password" />
-                            <input type="submit" value="Créer un compte" />
+                            <input type="submit" name="submit" value="Créer un compte" />
                         </fieldset>
                     </form>
                 </div>
