@@ -14,6 +14,8 @@ $connect_db = new PDO('mysql:host=localhost;dbname=shop', 'root', '', [
   PDO::MYSQL_ATTR_INIT_COMMAND => 'SET NAMES utf8'
 ]);
 
+echo '<pre>'; print_r($_POST); echo '</pre>';
+
 $erreur = [];
 $success_message = "";
 

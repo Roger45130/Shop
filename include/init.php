@@ -23,12 +23,13 @@ $content ='';
 
 //  ------- FAILLE XSS -------
 foreach($_POST as $key => $value){
-    $_POST[$key] = htmlentities(addslashes($value));
+    $_POST[$key] = htmlentities(addslashes(trim($value)));
 }
 
 foreach($_GET as $key => $value){
-    $_GET[$key] = htmlentities(addslashes($value));
+    $_GET[$key] = htmlentities(addslashes(trim($value)));
 }
+// trim() :  fonction prédéfinie qui supprime les espaces en début et fin de la chaine de caactères
 
 //  ------- INCLUSIONS FONCTIONS -------
 require_once("functions.php");
