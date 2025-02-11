@@ -27,6 +27,10 @@ if (isset($_POST['submit']) && $_SERVER['REQUEST_METHOD'] === 'POST') {
   // Si la condition IF retourne TRUE, l'email est existant en BDD, on entre dans le IF.
   if($data->rowCount()){
     $errorEmail = '<small class="text-color-danger">Un compte est déjà existant à cette adresse email.</small>';
+  }elseif(empty($_POST['email'])){
+    $errorEmail = '<small class="text-color-danger">Merci de saisir une adresse email.</small>';
+  }elseif(!filter_var($_POST['email'], FILTER_VALIDATE_EMAIL)){
+    $errorEmail = '<small class="text-color-danger">Merci de saisir une adresse email valide. (ex.: exemple@gmail.com</small>';
   }
 }
 
@@ -136,6 +140,7 @@ require_once('include/header.php');
                             <input type="text" placeholder="Enter votre nom" name="lastName" value="<?= htmlspecialchars($lastName ?? '') ?>" />
                             <?php if(isset($errorEmail)) echo $errorEmail; ?>
                             <input type="email" placeholder="Entrez votre adresse e-mail" name="email" class="<?php if(isset($errorEmail)) echo 'border-danger'; ?>" />
+                            value="<?php if(isset($_POST['email'])) echo $_POST['email'] ?>"
                             <input type="text" placeholder="Entrer votre adresse" name="address" value="<?= htmlspecialchars($address ?? '') ?>" />
                             <input type="text" placeholder="Entrer votre ville" name="city" value="<?= htmlspecialchars($city ?? '') ?>"/>
                             <input type="text" placeholder="Entrer votre code postal" name="zipcode" value="<?= htmlspecialchars($zipcode ?? '') ?>" />
