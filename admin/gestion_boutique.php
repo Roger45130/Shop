@@ -1,13 +1,17 @@
 <?php 
 require_once('../include/init.php');
 
-//  Si l'utilisateur n'est pas connecté ou est connecté mais non admin, on le redirige vers la page index.php
+// Si l'utilisateur n'est pas connecté ou est connecté mais non admin, on le redirige vers la page index.php
+
 if(!adminConnected()){
+  // header('location: ' . URL . ' index.php');
+  //                  http://localhost/PHP/shop/index.php
   header('location: ' . URL . 'index.php');
 }
 
 require_once('include/header.php');
 ?>
+
     <section class="section is-title-bar">
       <div class="level">
         <div class="level-left">
@@ -154,36 +158,106 @@ require_once('include/header.php');
         <header class="card-header">
           <p class="card-header-title">
             <span class="icon"><span class="mdi mdi-shopping-outline"></span></span>
-            Modification Produit
+            Ajout Produit
           </p>
         </header>
         <div class="card-content">
-          <form method="get">
+          <form method="post">
             <div class="field is-horizontal">
               <div class="field-label is-normal">
-                <label class="label">From</label>
+                <label class="label">Réference / Catégorie</label>
               </div>
               <div class="field-body">
                 <div class="field">
-                  <p class="control is-expanded has-icons-left">
-                    <input class="input" type="text" placeholder="Name" />
-                    <span class="icon is-small is-left"><i class="mdi mdi-account"></i></span>
-                  </p>
+                  <input class="input" type="text" name="reference" placeholder="Entrer une référence produit" />
                 </div>
                 <div class="field">
-                  <p
-                    class="control is-expanded has-icons-left has-icons-right">
-                    <input
-                      class="input is-success"
-                      type="email"
-                      placeholder="Email"
-                      value="alex@smith.com" />
-                    <span class="icon is-small is-left"><i class="mdi mdi-mail"></i></span>
-                    <span class="icon is-small is-right"><i class="mdi mdi-check"></i></span>
-                  </p>
+                  <input class="input" type="text" name="category" placeholder="Entrer une catégorie produit" />
                 </div>
               </div>
             </div>
+
+            <div class="field is-horizontal">
+              <div class="field-label is-normal">
+                <label class="label">Titre / Couleur</label>
+              </div>
+              <div class="field-body">
+                <div class="field">
+                  <input class="input" type="text" name="title" placeholder="Entrer un titre produit" />
+                </div>
+                <div class="field">
+                  <input class="input" type="text" name="color" placeholder="Entrer une couleur produit" />
+                </div>
+              </div>
+            </div>
+
+            <div class="field is-horizontal">
+              <div class="field-label is-normal">
+                <label class="label">Taille / Genre</label>
+              </div>
+              <div class="field-body">
+                <div class="field is-narrow">
+                  <div class="control">
+                    <div class="select is-fullwidth">
+                      <select name="size">
+                        <option value="S">S</option>
+                        <option value="M">M</option>
+                        <option value="L">L</option>
+                        <option value="XL">XL</option>
+                      </select>
+                    </div>
+                  </div>
+                </div>
+
+                <div class="field is-narrow">
+                  <div class="control">
+                    <div class="select is-fullwidth">
+                      <select name="public">
+                        <option value="homme">Homme</option>
+                        <option value="femme">Femme</option>
+                        <option value="mixte">Mixte</option>
+                      </select>
+                    </div>
+                  </div>
+                </div>
+
+              </div>
+            </div>
+
+            <div class="field is-horizontal">
+              <div class="field-label is-normal">
+                <label class="label">Photo produit</label>
+              </div>
+              <div class="field-body">
+                <div class="field">
+                <div class="file has-name">
+                  <label class="file-label">
+                    <input class="file-input" type="file" name="resume" />
+                    <span class="file-cta">
+                      <!-- <span class="file-icon">
+                        <i class="fas fa-upload"></i>
+                      </span> -->
+                      <span class="file-label"> Choisir un fichier </span>
+                    </span>
+                    <span class="file-name"> Parcourir </span>
+                  </label>
+                </div>
+                </div>
+              </div>
+            </div>
+
+
+
+
+
+
+
+
+
+
+
+
+
             <div class="field is-horizontal">
               <div class="field-label"></div>
               <div class="field-body">
