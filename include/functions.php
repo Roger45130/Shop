@@ -15,7 +15,8 @@ function userConnected(){
 
 function adminConnected(){
     // Si l'indice 'roles" dans la session est différent d'admin, cela veut dire que c'est un utilisateur lambda, on retourne false.
-    if(isset($_SESSION['user']['roles']) && $_SESSION['user']['roles'] !='admin') return false;
-
-    return true; // on retourne true si la session le role est bien 'admin'
+    if(userConnected() && $_SESSION['user']['roles'] == 'admin') 
+        return true;
+    else
+        return false; // on retourne false si la session le role est bien 'admin'
 }

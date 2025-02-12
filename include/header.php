@@ -75,6 +75,7 @@
               </li>
               <?php endif; ?>
 
+              <?php if(adminConnected()): ?>
               <li class="nav-item dropdown">
                 <a
                   class="nav-link dropdown-toggle"
@@ -90,6 +91,8 @@
                   <li><a href="admin/gestion_user.php">Utilisateurs</a></li>
                 </ul>
               </li>
+              <?php endif; ?>
+
               <li class="nav-item">
                 <a class="nav-link" href="#">
                   <svg

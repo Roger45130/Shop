@@ -3,6 +3,8 @@ require_once('include/init.php');
 
 // Si l'indice 'action' est définit dans l'URL et qu'il a pour valeur 'logout', cela veut dire que l'internaute à cliquer sur le lien déconnexion, on supprime le tableau Array de données user dans la session
 if(isset($_GET['action']) && $_GET['action'] == 'logout'){
+
+  // On se supprime pas le fichier de session mais seulement l'indice 'user'
   unset($_SESSION['user']);
 }
 
