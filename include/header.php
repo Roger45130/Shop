@@ -56,9 +56,11 @@
               <li class="nav-item">
                 <a class="nav-link" href="contact.php">Contact</a>
               </li>
+              <?php if(!userConnected()): ?>
               <li class="nav-item">
                 <a class="nav-link" href="connexion.php">Identifiez-vous</a>
               </li>
+              <?php endif; ?>
               <li class="nav-item">
                 <a class="nav-link" href="inscription.php">Inscription</a>
               </li>
