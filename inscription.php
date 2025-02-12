@@ -2,13 +2,12 @@
 require_once('include/init.php');
 
 /*
-    
     5. Afficher un message si le champ mot de passe est vide
     6. Contrôler que les mots de passe correspondent
 */
 
-// 1. Contrôler que l'on receptionne bien toute les données saisie dans le formulaire en PHP
-echo '<pre>'; print_r($_POST); echo '</pre>';
+// // 1. Contrôler que l'on receptionne bien toute les données saisie dans le formulaire en PHP
+// echo '<pre>'; print_r($_POST); echo '</pre>';
 
 if(isset($_POST['submit']) && $_SERVER['REQUEST_METHOD'] === 'POST'){
 
@@ -49,6 +48,9 @@ if(isset($_POST['submit']) && $_SERVER['REQUEST_METHOD'] === 'POST'){
 
   //  Exercice : Si l'internaute (utilisateur) a correctement rempli le formulaire, excuter la requêt d'insertion en Base de données (BDD) avec (prepare + bindValue + execute), on redirige l'internaute vers la page connexion.php
   if(!isset($error)){
+    //  Le mot de passe n'est jamais conservé en clair dans la BDD.
+    //  password_hash permet de créer une clé de hachage du mot de passe dans la BDD.
+
     $data = $connect_db->prepare("INSERT INTO user (password, firstName, lastName, email, city, zipcode, address) VALUES (:password, :firstName, :lastName, :email, :city, :zipcode, :address )");
     $data->bindValue(':password', password_hash($_POST['password'], PASSWORD_DEFAULT), PDO::PARAM_STR);
     $data->bindValue(':firstName', $_POST['firstName'], PDO::PARAM_STR);
@@ -59,7 +61,8 @@ if(isset($_POST['submit']) && $_SERVER['REQUEST_METHOD'] === 'POST'){
     $data->bindValue(':address', $_POST['address'], PDO::PARAM_STR);
     $data->execute();
 
-    
+    //  On stock dans le fichier de session de l'utilisateur, le fichier sesion est stocké serveur et accessible via la superglobale $_SESSION et accessible sur n'importe qul page du site, on stock ici un message (message flash) dans le fichier session de l'utilisateur.
+    $_SESSION['msgRegisterValidate'] = '<div class="bg-success p-3 mb-3 text-white text-center">Votre inscription est validé. Vous pouvez dès à présent vous connecter</div>';
 
     header('location: connexion.php');
   }

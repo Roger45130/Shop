@@ -1,4 +1,8 @@
 <?php
+require_once('include/init.php');
+
+
+
 require_once('include/header.php');
 ?>
 
@@ -20,6 +24,9 @@ require_once('include/header.php');
     <div class="container">
       <div class="row">
         <div class="col-lg-8 offset-lg-2">
+
+          <?php if(isset($_SESSION['msgRegisterValidate'])) echo $_SESSION['msgRegisterValidate']; ?>
+
           <div class="full">
             <form action="index.php">
               <fieldset>
@@ -44,4 +51,6 @@ require_once('include/header.php');
 
 <?php
 require_once('include/footer.php');
+//  On supprime le message de validation d'inscription dans la session, afin qu'il ne soit plus affiché à chaque visite sur la page d'authentification.
+unset($_SESSION['msgRegisterValidate']);
 ?>
