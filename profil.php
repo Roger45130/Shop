@@ -36,6 +36,9 @@ require_once('include/header.php');
               <li><strong>Code Postal : </strong> <?php echo $_SESSION['user']['zipcode'] ?? 'Non renseiné'; ?></li>
               <li><strong>Ville : </strong> <?php echo $_SESSION['user']['city'] ?? 'Non renseiné'; ?></li>
             </ul>
+            <?php if(isset($_SESSION['user']['roles']) && $_SESSION['user']['roles'] === 'admin'): ?>
+              <p class="text-success text-center">Vous êtes ADMINISTRATEUR</p>
+            <?php endif; ?>
           </div>
         </div>
       </div>
