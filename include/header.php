@@ -56,17 +56,25 @@
               <li class="nav-item">
                 <a class="nav-link" href="contact.php">Contact</a>
               </li>
-              <?php if(!userConnected()): ?>
+
+              <?php if(!userConnected()): // On entre dans la condition IF dans le cas où l'idice 'user' n'est pas définit dans la session, donc l'utilisateur n'est pas authentifié ?>
               <li class="nav-item">
                 <a class="nav-link" href="connexion.php">Identifiez-vous</a>
               </li>
-              <?php endif; ?>
               <li class="nav-item">
                 <a class="nav-link" href="inscription.php">Inscription</a>
               </li>
+              <?php endif; ?>
+
+              <?php if(userConnected()): // On entre dans la condition IF dans le cas où l'idice 'user' est définit dans la session, donc l'utilisateur est authentifié  ?>
               <li class="nav-item">
                 <a class="nav-link" href="profil.php">Mon compte</a>
               </li>
+              <li class="nav-item">
+                <a class="nav-link" href="connexion.php?action=logout">Déconnexion</a>
+              </li>
+              <?php endif; ?>
+
               <li class="nav-item dropdown">
                 <a
                   class="nav-link dropdown-toggle"

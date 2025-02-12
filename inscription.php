@@ -1,6 +1,11 @@
 <?php 
 require_once('include/init.php');
 
+// Si l'utiilisateur est connecté, il n'a rien à faire sur la page inscription, on le redirige vers la page index.php
+if(userConnected()){
+  header('location: index.php');
+}
+
 /*
     5. Afficher un message si le champ mot de passe est vide
     6. Contrôler que les mots de passe correspondent

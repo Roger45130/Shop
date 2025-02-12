@@ -1,6 +1,16 @@
 <?php
 require_once('include/init.php');
 
+// Si l'indice 'action' est définit dans l'URL et qu'il a pour valeur 'logout', cela veut dire que l'internaute à cliquer sur le lien déconnexion, on supprime le tableau Array de données user dans la session
+if(isset($_GET['action']) && $_GET['action'] == 'logout'){
+  unset($_SESSION['user']);
+}
+
+// Si l'utiilisateur est connecté, il n'a rien à faire sur la page identifiez-vous, on le redirige vers la page index.php
+if(userConnected()){
+  header('location: index.php');
+}
+
 // echo '<pre>'; print_r($_POST); echo '</pre>';
 
 // Si on soumet le formulaire
