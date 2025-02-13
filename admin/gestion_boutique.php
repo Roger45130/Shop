@@ -296,10 +296,10 @@ require_once('include/header.php');
               </div>
               <div class="field-body">
                 <div class="field">
-                  <input class="input" type="text" name="reference" placeholder="Entrer une référence produit" />
+                  <input class="input" type="text" name="reference" placeholder="Entrer une référence produit" value="<?php if(isset($currentProduct['reference'])) echo $currentProduct['reference']; ?>"/>
                 </div>
                 <div class="field">
-                  <input class="input" type="text" name="category" placeholder="Entrer une catégorie produit" />
+                  <input class="input" type="text" name="category" placeholder="Entrer une catégorie produit" value="<?php if(isset($currentProduct['category'])) echo $currentProduct['category']; ?>"/>
                 </div>
               </div>
             </div>
@@ -310,10 +310,10 @@ require_once('include/header.php');
               </div>
               <div class="field-body">
                 <div class="field">
-                  <input class="input" type="text" name="title" placeholder="Entrer un titre produit" />
+                  <input class="input" type="text" name="title" placeholder="Entrer un titre produit" value="<?php if(isset($currentProduct['title'])) echo $currentProduct['title']; ?>"/>
                 </div>
                 <div class="field">
-                  <input class="input" type="text" name="color" placeholder="Entrer une couleur produit" />
+                  <input class="input" type="text" name="color" placeholder="Entrer une couleur produit" value="<?php if(isset($currentProduct['color'])) echo $currentProduct['color']; ?>"/>
                 </div>
               </div>
             </div>
@@ -328,9 +328,12 @@ require_once('include/header.php');
                     <div class="select is-fullwidth">
                       <select name="size">
                         <option value="S">S</option>
-                        <option value="M">M</option>
-                        <option value="L">L</option>
-                        <option value="XL">XL</option>
+
+                        <option value="M" <?php if(isset($currentProduct['size']) && $currentProduct['size'] == 'M') echo 'selected' ?>>M</option>
+
+                        <option value="L" <?php if(isset($currentProduct['size']) && $currentProduct['size'] == 'L') echo 'selected' ?>>L</option>
+
+                        <option value="XL" <?php if(isset($currentProduct['size']) && $currentProduct['size'] == 'XL') echo 'selected' ?>>XL</option>
                       </select>
                     </div>
                   </div>
@@ -341,8 +344,10 @@ require_once('include/header.php');
                     <div class="select is-fullwidth">
                       <select name="public">
                         <option value="homme">Homme</option>
-                        <option value="femme">Femme</option>
-                        <option value="mixte">Mixte</option>
+
+                        <option value="femme" <?php if(isset($currentProduct['public']) && $currentProduct['public'] == 'femme') echo 'selected' ?>>Femme</option>
+
+                        <option value="mixte" <?php if(isset($currentProduct['public']) && $currentProduct['public'] == 'mixte') echo 'selected' ?>>Mixte</option>
                       </select>
                     </div>
                   </div>
