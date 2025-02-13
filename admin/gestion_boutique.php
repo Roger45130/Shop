@@ -58,8 +58,14 @@ if(isset($_POST['submit']) && $_SERVER['REQUEST_METHOD'] === 'POST'){
       // 2. Le chemin complet de l'image vers le dossier sur le serveur.
       copy($_FILES['picture']['tmp_name'], $pictureFolder);
 
-      // Requête SQL d'insertion.
+      // Requête SQL d'insertion/modification.
+      if(isset($_GET['action']) && $_GET['action'] == 'update'){
+        $data = $connect_db->prepare("UPDATE product SET reference = :reference, category = :category, title = :title, description = :description, color = :color, size = :size, public = :public, picture = :picture, price = :price, stock = :stock WHERE id_product = :id");
+
+        $data->bindValue(':id', $_GET['id'], PDO::PARAM_INT);
+      }else{
       $data = $connect_db->prepare("INSERT INTO product(reference, category, title, description, color, size, public, picture, price, stock) VALUE (:reference, :category, :title, :description, :color, :size, :public, :picture, :price, :stock)");
+      }
       $data->bindValue(':reference', $_POST['reference'], PDO::PARAM_STR);
       $data->bindValue(':category', $_POST['category'], PDO::PARAM_STR);
       $data->bindValue(':title', $_POST['title'], PDO::PARAM_STR);
@@ -94,7 +100,7 @@ if(isset($_GET['action']) && $_GET['action'] == 'update'){
   $data->execute();
 
   $currentProduct = $data->fetch(PDO::FETCH_ASSOC);
-  echo '<pre>'; print_r($currentProduct); echo '</pre>';
+  // echo '<pre>'; print_r($currentProduct); echo '</pre>';
 }
 
 require_once('include/header.php');
@@ -284,7 +290,12 @@ require_once('include/header.php');
         <header class="card-header">
           <p class="card-header-title">
             <span class="icon"><span class="mdi mdi-shopping-outline"></span></span>
-            Ajout Produit
+            <?php if(isset($_GET['action']) && $_GET['action'] == 'update'): ?>
+              Modification
+            <?php else: ?>
+              Ajout
+            <?php endif; ?> 
+            Produit
           </p>
         </header>
         <div class="card-content">
