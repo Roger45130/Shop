@@ -87,6 +87,16 @@ if($nbProducts <= 1)
 else
   $txt = "$nbProducts produits";
 
+
+if(isset($_GET['action']) && $_GET['action'] == 'update'){
+  $data = $connect_db->prepare("SELECT * FROM product WHERE id_product = :id");
+  $data->bindValue(':id', $_GET['id'], PDO::PARAM_INT);
+  $data->execute();
+
+  $currentProduct = $data->fetch(PDO::FETCH_ASSOC);
+  echo '<pre>'; print_r($currentProduct); echo '</pre>';
+}
+
 require_once('include/header.php');
 ?>
 
@@ -202,7 +212,7 @@ require_once('include/header.php');
                     <td class="is-actions-cell">
                       <div class="buttons is-right">
                         <a
-                        href=?action=update&id<?= $arrayProduct['id_product'] ?>
+                        href=?action=update&id=<?= $arrayProduct['id_product'] ?>
                           class="button is-small is-primary"
                           type="button">
                           <!-- <span class="icon"><i class="mdi mdi-eye"></i></span> -->
