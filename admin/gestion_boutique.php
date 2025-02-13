@@ -10,52 +10,82 @@ if(!adminConnected()){
 }
 
 if(isset($_POST['submit']) && $_SERVER['REQUEST_METHOD'] === 'POST'){
-  echo '<pre>'; print_r($_FILES); echo '</pre>';
+  // echo '<pre>'; print_r($_FILES); echo '</pre>';
   // echo '<pre>'; print_r($_POST); echo '</pre>';
 
-  // $_FILES est une superglobale permettant de stocker les données d'un fichier uploadé (nom, extension, taile etc...)
+  // $_FILES est une superglobale permettant de stocker les données d'un fichier uploadé (nom, extension, taile etc...).
   // Si une image a bien été uploadé
   if(!empty($_FILES['picture']['name'])){
 
     // Contrôle de l'extension
     $currentExtension = ['jpg', 'jpeg', 'png', 'webp'];
     $fileUploaded = new SplFileInfo($_FILES['picture']['name']);
+    // SplFileInfo : Classe prédéfinie en PHP permettant de traiter les données d'un fichier uploadé, elle contient ses propres méthodes (fonction).
     // echo '<pre>'; print_r($fileUploaded); echo '</pre>';
     // echo '<pre>'; print_r(get_class_methods($fileUploaded)); echo '</pre>';
 
+    // getExtension() est une méthode issue de la classe SplFileInfo qui retourne l'extension du fichier uploadé.
     $fileUploadedExtension = $fileUploaded->getExtension();
     // echo $fileUploadedExtension;
 
+    // Si array_search() : fonciton prédéfini qui retourne la position d'un élément (indice) dans un tableau Array.
     //                                      pdf                ['jpg', 'jpeg', 'png', 'webp']
     $positionExtension = array_search($fileUploadedExtension, $currentExtension);
-    echo "Position de l'extension : " . $positionExtension . '<br>';
+    // echo "Position de l'extension : " . $positionExtension . '<br>';
 
+    // Si arry_search retourne false, cela veut dire que l'extension n'a pas été trouvé dans le tableau Array $currentExtension, alors on entre dans le IF.
     if($positionExtension === false){
       $errorPicture = "Extension non prise en charge (jpg, jpeg, png, webp)";
     }else{
-      // On concatène la référence saisie dans le formulaire avec le nom de l'image
+      // On concatène la référence saisie dans le formulaire avec le nom de l'image.
       $pictureName = $_POST['reference'] . '-' . $_FILES['picture']['name'];
       // echo $pictureName . '<br>';
 
-      // On définit l'URL de l'image qui sera stocké en BDD
+      // On définit l'URL de l'image qui sera stocké en BDD.
       // http://localhost/PHP/shop/assets/images-produits/25A45C-p7.png
       $pictureUrlDb = URL . "assets/images-produits/$pictureName";
       // echo $pictureUrlDb . '<br>';
 
       // <img src="http://localhost/PHP/shop/assets/images-produits/25A45C-p7.png">
 
-      // On définit le chemin physique sur le serveur où sera copié l'image
+      // On définit le chemin physique sur le serveur où sera copié l'image.
       // /opt/lampp/htdocs/PHP/shop/assets/images-produits/25A45C-p7.png
       $pictureFolder = RACINE_SITE . "assets/images-produits/$pictureName";
       // echo $pictureFolder;
 
       // La fonction prédéfinie copy() permet de copier un fichier dans un dossier, 2 arguments:
-      // 1. Le nom temporaire de l'image (source de l'image) accessible dans $_FILES
-      // 2. Le chemin complet de l'image vers le dossier sur le serveur
+      // 1. Le nom temporaire de l'image (source de l'image) accessible dans $_FILES.
+      // 2. Le chemin complet de l'image vers le dossier sur le serveur.
       copy($_FILES['picture']['tmp_name'], $pictureFolder);
+
+      // Requête SQL d'insertion.
+      $data = $connect_db->prepare("INSERT INTO product(reference, category, title, description, color, size, public, picture, price, stock) VALUE (:reference, :category, :title, :description, :color, :size, :public, :picture, :price, :stock)");
+      $data->bindValue(':reference', $_POST['reference'], PDO::PARAM_STR);
+      $data->bindValue(':category', $_POST['category'], PDO::PARAM_STR);
+      $data->bindValue(':title', $_POST['title'], PDO::PARAM_STR);
+      $data->bindValue(':description', $_POST['description'], PDO::PARAM_STR);
+      $data->bindValue(':color', $_POST['color'], PDO::PARAM_STR);
+      $data->bindValue(':size', $_POST['size'], PDO::PARAM_STR);
+      $data->bindValue(':public', $_POST['public'], PDO::PARAM_STR);
+      $data->bindValue(':picture', $pictureUrlDb, PDO::PARAM_STR);
+      $data->bindValue(':price', $_POST['price']);
+      $data->bindValue(':stock', $_POST['stock'], PDO::PARAM_INT);
+      $data->execute();
+
+      $_SESSION['msgValidation'] = "L'enregistrement a été validé.";
     }
   }
 }
+
+$data = $connect_db->query("SELECT * FROM product");
+$product = $data->fetchAll(PDO::FETCH_ASSOC);
+// echo '<pre>'; print_r($product); echo '</pre>';
+
+$nbProducts = $data->rowCount();
+if($nbProducts <= 1)
+  $txt = "$nbProducts produit";
+else
+  $txt = "$nbProducts produits";
 
 require_once('include/header.php');
 ?>
@@ -89,16 +119,20 @@ require_once('include/header.php');
       </div>
     </section>
     <section class="section is-main-section">
+
+      <?php if(isset($_SESSION['msgValidation'])): ?>
       <div class="notification is-primary">
         <button class="delete"></button>
-        Lorem ipsum, dolor sit amet consectetur adipisicing elit.
+        <?php= $_SESSION['msgValidation']; ?>
       </div>
+      <?php endif; ?>
+
       <div class="card has-table">
         <header class="card-header">
           <p class="card-header-title">
             <span class="icon"><span class="mdi mdi-shopping-outline"></span>
             </span>
-            10 produits
+            <?= $txt ?>
           </p>
           <a href="#" class="card-header-icon">
             <span class="icon"><i class="mdi mdi-reload"></i></span>
@@ -117,16 +151,23 @@ require_once('include/header.php');
                         <span class="check"></span>
                       </label>
                     </th>
-                    <th></th>
-                    <th>Name</th>
-                    <th>Company</th>
-                    <th>City</th>
-                    <th>Progress</th>
-                    <th>Created</th>
-                    <th></th>
+                    <?php  //                8
+                      for($i = 0; $i < $data->columnCount(); $i++): 
+                        $dataColumn = $data->getColumnMeta($i);
+                        // echo '<pre>'; print_r($dataColumn); echo '</pre>';
+                        if($dataColumn['name'] != 'id_product'):
+                        ?>
+                      <th><?= ucfirst($dataColumn['name']) ?></th>
+
+                      <?php 
+                          endif;
+                        endfor; 
+                      ?>
+                    <th>Actions</th>
                   </tr>
                 </thead>
                 <tbody>
+                  <?php foreach($product as $arrayProduct): ?>
                   <tr>
                     <td class="is-checkbox-cell">
                       <label class="b-checkbox checkbox">
@@ -134,35 +175,36 @@ require_once('include/header.php');
                         <span class="check"></span>
                       </label>
                     </td>
-                    <td class="is-image-cell">
-                      <div class="image">
-                        <img
-                          src="https://avatars.dicebear.com/v2/initials/rebecca-bauch.svg"
-                          class="is-rounded" />
-                      </div>
+                    
+
+
+                    <?php foreach($arrayProduct as $key => $value):
+                      if($key != 'id_product'):
+                    ?>
+                    <td data-label="<?= ucfirst($key) ?>"><?= $value; ?>
+                        <?php if($key == 'picture'): ?>
+                            <img src="<?= $value ?>" class="picture__product" alt="<?= $arrayProduct['title'] ?>">
+                        <?php elseif($key == 'price'): ?>
+
+                          <?php else: ?>
+
+                          <?php endif; ?>
                     </td>
-                    <td data-label="Name">Rebecca Bauch</td>
-                    <td data-label="Company">Daugherty-Daniel</td>
-                    <td data-label="City">South Cory</td>
-                    <td data-label="Progress" class="is-progress-cell">
-                      <progress
-                        max="100"
-                        class="progress is-small is-primary"
-                        value="79">
-                        79
-                      </progress>
-                    </td>
-                    <td data-label="Created">
-                      <small
-                        class="has-text-grey is-abbr-like"
-                        title="Oct 25, 2020">Oct 25, 2020</small>
-                    </td>
+                    <?php 
+                        endif;
+                      endforeach; 
+                    ?>
+
+
+
+
+
                     <td class="is-actions-cell">
                       <div class="buttons is-right">
                         <button
                           class="button is-small is-primary"
                           type="button">
-                          <span class="icon"><i class="mdi mdi-eye"></i></span>
+                          <!-- <span class="icon"><i class="mdi mdi-eye"></i></span> -->
                         </button>
                         <button
                           class="button is-small is-danger jb-modal"
@@ -173,6 +215,7 @@ require_once('include/header.php');
                       </div>
                     </td>
                   </tr>
+                  <?php endforeach; ?>
                 </tbody>
               </table>
             </div>
@@ -290,6 +333,7 @@ require_once('include/header.php');
                       <span class="file-name">Parcourir</span>
                     </label>
                   </div>
+                  <?php if(isset($errorPicture)) echo $errorPicture; ?>
                 </div>
               </div>
             </div>
@@ -368,4 +412,5 @@ require_once('include/header.php');
 
 <?php 
 require_once('include/footer.php');
+unset($_SESSION['msgValidation']);
 ?>
