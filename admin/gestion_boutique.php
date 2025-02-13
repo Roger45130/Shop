@@ -232,7 +232,7 @@ require_once('include/header.php');
                           class="button is-small is-danger jb-modal"
                           data-target="sample-modal-<?= $arrayProduct['id_product'] ?>"
                           type="button">
-                          <span class="icon"><i class="mdi mdi-trash-can"></i></span>
+                          <span class="icon"><i class="mdi mdi-trash-can-outline"></i></span>
                         </button>
                       </div>
                     </td>
