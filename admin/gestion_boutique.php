@@ -220,7 +220,6 @@ require_once('include/header.php');
                     </div>
                   </div>
                 </div>
-
               </div>
             </div>
 
@@ -230,103 +229,53 @@ require_once('include/header.php');
               </div>
               <div class="field-body">
                 <div class="field">
-                <div class="file has-name">
-                  <label class="file-label">
-                    <input class="file-input" type="file" name="resume" />
-                    <span class="file-cta">
-                      <!-- <span class="file-icon">
-                        <i class="fas fa-upload"></i>
-                      </span> -->
-                      <span class="file-label"> Choisir un fichier </span>
-                    </span>
-                    <span class="file-name"> Parcourir </span>
-                  </label>
-                </div>
-                </div>
-              </div>
-            </div>
-
-
-
-
-
-
-
-
-
-
-
-
-
-            <div class="field is-horizontal">
-              <div class="field-label"></div>
-              <div class="field-body">
-                <div class="field is-expanded">
-                  <div class="field has-addons">
-                    <p class="control">
-                      <a class="button is-static">+33</a>
-                    </p>
-                    <p class="control is-expanded">
-                      <input
-                        class="input"
-                        type="tel"
-                        placeholder="Your phone number" />
-                    </p>
+                  <div class="file has-name">
+                    <label class="file-label">
+                      <input class="file-input" type="file" name="resume" />
+                      <span class="file-cta">
+                        <!-- <span class="file-icon">
+                          <i class="fas fa-upload"></i>
+                        </span> -->
+                        <span class="file-label">Choisir un fichier</span>
+                      </span>
+                      <span class="file-name">Parcourir</span>
+                    </label>
                   </div>
-                  <p class="help">Do not enter the first zero</p>
-                </div>
-              </div>
-            </div>
-            <div class="field is-horizontal">
-              <div class="field-label is-normal">
-                <label class="label">Department</label>
-              </div>
-              <div class="field-body">
-                <div class="field is-narrow">
-                  <div class="control">
-                    <div class="select is-fullwidth">
-                      <select>
-                        <option>Business development</option>
-                        <option>Marketing</option>
-                        <option>Sales</option>
-                      </select>
-                    </div>
-                  </div>
-                </div>
-              </div>
-            </div>
-            <div class="field is-horizontal">
-              <div class="field-label is-normal">
-                <label class="label">Subject</label>
-              </div>
-              <div class="field-body">
-                <div class="field">
-                  <div class="control">
-                    <input
-                      class="input is-danger"
-                      type="text"
-                      placeholder="e.g. Partnership opportunity" />
-                  </div>
-                  <p class="help is-danger">This field is required</p>
                 </div>
               </div>
             </div>
 
             <div class="field is-horizontal">
               <div class="field-label is-normal">
-                <label class="label">Question</label>
+                <label class="label">Description</label>
               </div>
               <div class="field-body">
                 <div class="field">
                   <div class="control">
                     <textarea
                       class="textarea"
-                      placeholder="Explain how we can help you"></textarea>
+                      name="description"
+                      placeholder="Entrer une description du produit"></textarea>
                   </div>
                 </div>
               </div>
             </div>
+
             <div class="field is-horizontal">
+              <div class="field-label is-normal">
+                <label class="label">Prix / Stock</label>
+              </div>
+              <div class="field-body">
+                <div class="field">
+                  <input class="input" type="text" name="price" placeholder="Entrer un prix produit" />
+                </div>
+                <div class="field">
+                  <input class="input" type="text" name="stock" placeholder="Entrer un stock produit" />
+                </div>
+              </div>
+            </div>
+
+            <!-- <div class="field is-horizontal">
               <div class="field-label">
                 <label class="label">Switch</label>
               </div>
@@ -338,7 +287,7 @@ require_once('include/header.php');
                   </label>
                 </div>
               </div>
-            </div>
+            </div> -->
             <hr />
             <div class="field is-horizontal">
               <div class="field-label">
@@ -348,17 +297,17 @@ require_once('include/header.php');
                 <div class="field">
                   <div class="field is-grouped">
                     <div class="control">
-                      <button type="submit" class="button is-primary">
-                        <span>Submit</span>
+                      <button type="submit" name="submit" class="button is-primary">
+                        <span>Enregistrer</span>
                       </button>
                     </div>
-                    <div class="control">
+                    <!-- <div class="control">
                       <button
                         type="button"
                         class="button is-primary is-outlined">
                         <span>Reset</span>
                       </button>
-                    </div>
+                    </div> -->
                   </div>
                 </div>
               </div>
