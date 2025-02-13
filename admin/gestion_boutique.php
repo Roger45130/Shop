@@ -13,6 +13,10 @@ if(isset($_POST['submit']) && $_SERVER['REQUEST_METHOD'] === 'POST'){
   // echo '<pre>'; print_r($_FILES); echo '</pre>';
   // echo '<pre>'; print_r($_POST); echo '</pre>';
 
+  if(isset($_GET['action']) && $_GET['action'] === 'update'){
+    $pictureUrlDb = $_POST['current_picture'];
+  }
+
   // $_FILES est une superglobale permettant de stocker les données d'un fichier uploadé (nom, extension, taile etc...).
   // Si une image a bien été uploadé
   if(!empty($_FILES['picture']['name'])){
@@ -57,7 +61,8 @@ if(isset($_POST['submit']) && $_SERVER['REQUEST_METHOD'] === 'POST'){
       // 1. Le nom temporaire de l'image (source de l'image) accessible dans $_FILES.
       // 2. Le chemin complet de l'image vers le dossier sur le serveur.
       copy($_FILES['picture']['tmp_name'], $pictureFolder);
-
+      }
+    }
       // Requête SQL d'insertion/modification.
       if(isset($_GET['action']) && $_GET['action'] == 'update'){
         $data = $connect_db->prepare("UPDATE product SET reference = :reference, category = :category, title = :title, description = :description, color = :color, size = :size, public = :public, picture = :picture, price = :price, stock = :stock WHERE id_product = :id");
@@ -79,8 +84,7 @@ if(isset($_POST['submit']) && $_SERVER['REQUEST_METHOD'] === 'POST'){
       $data->execute();
 
       $_SESSION['msgValidation'] = "L'enregistrement a été validé.";
-    }
-  }
+
 }
 
 $data = $connect_db->query("SELECT * FROM product");
@@ -388,7 +392,7 @@ require_once('include/header.php');
                 </div>
               </div>
             </div>
-            <input type="hidden" name="current_picture value="<?php if(isset($currentProduct['picture'])) echo $currentProduct['picture'] ?>">
+            <input type="hidden" name="current_picture" value="<?php if(isset($currentProduct['picture'])) echo $currentProduct['picture'] ?>">
 
             <?php if(isset($currentProduct['picture']) && !empty($currentProduct['picture'])): ?>
 
