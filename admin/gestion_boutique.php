@@ -9,6 +9,54 @@ if(!adminConnected()){
   header('location: ' . URL . 'index.php');
 }
 
+if(isset($_POST['submit']) && $_SERVER['REQUEST_METHOD'] === 'POST'){
+  echo '<pre>'; print_r($_FILES); echo '</pre>';
+  // echo '<pre>'; print_r($_POST); echo '</pre>';
+
+  // $_FILES est une superglobale permettant de stocker les données d'un fichier uploadé (nom, extension, taile etc...)
+  // Si une image a bien été uploadé
+  if(!empty($_FILES['picture']['name'])){
+
+    // Contrôle de l'extension
+    $currentExtension = ['jpg', 'jpeg', 'png', 'webp'];
+    $fileUploaded = new SplFileInfo($_FILES['picture']['name']);
+    // echo '<pre>'; print_r($fileUploaded); echo '</pre>';
+    // echo '<pre>'; print_r(get_class_methods($fileUploaded)); echo '</pre>';
+
+    $fileUploadedExtension = $fileUploaded->getExtension();
+    // echo $fileUploadedExtension;
+
+    //                                      pdf                ['jpg', 'jpeg', 'png', 'webp']
+    $positionExtension = array_search($fileUploadedExtension, $currentExtension);
+    echo "Position de l'extension : " . $positionExtension . '<br>';
+
+    if($positionExtension === false){
+      $errorPicture = "Extension non prise en charge (jpg, jpeg, png, webp)";
+    }else{
+      // On concatène la référence saisie dans le formulaire avec le nom de l'image
+      $pictureName = $_POST['reference'] . '-' . $_FILES['picture']['name'];
+      // echo $pictureName . '<br>';
+
+      // On définit l'URL de l'image qui sera stocké en BDD
+      // http://localhost/PHP/shop/assets/images-produits/25A45C-p7.png
+      $pictureUrlDb = URL . "assets/images-produits/$pictureName";
+      // echo $pictureUrlDb . '<br>';
+
+      // <img src="http://localhost/PHP/shop/assets/images-produits/25A45C-p7.png">
+
+      // On définit le chemin physique sur le serveur où sera copié l'image
+      // /opt/lampp/htdocs/PHP/shop/assets/images-produits/25A45C-p7.png
+      $pictureFolder = RACINE_SITE . "assets/images-produits/$pictureName";
+      // echo $pictureFolder;
+
+      // La fonction prédéfinie copy() permet de copier un fichier dans un dossier, 2 arguments:
+      // 1. Le nom temporaire de l'image (source de l'image) accessible dans $_FILES
+      // 2. Le chemin complet de l'image vers le dossier sur le serveur
+      copy($_FILES['picture']['tmp_name'], $pictureFolder);
+    }
+  }
+}
+
 require_once('include/header.php');
 ?>
 
@@ -162,7 +210,8 @@ require_once('include/header.php');
           </p>
         </header>
         <div class="card-content">
-          <form method="post">
+          <!-- enctype="multitpart/form-data" : permet de récupérer en php les données d'un fichier uploadé -->
+          <form method="post" enctype="multipart/form-data">
             <div class="field is-horizontal">
               <div class="field-label is-normal">
                 <label class="label">Réference / Catégorie</label>
@@ -231,7 +280,7 @@ require_once('include/header.php');
                 <div class="field">
                   <div class="file has-name">
                     <label class="file-label">
-                      <input class="file-input" type="file" name="resume" />
+                      <input class="file-input" type="file" name="picture" />
                       <span class="file-cta">
                         <!-- <span class="file-icon">
                           <i class="fas fa-upload"></i>
