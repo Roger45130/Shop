@@ -377,6 +377,7 @@ require_once('include/header.php');
                 </div>
               </div>
             </div>
+            <input type="hidden" name="current_picture value="<?php if(isset($currentProduct['picture'])) echo $currentProduct['picture'] ?>">
 
             <?php if(isset($currentProduct['picture']) && !empty($currentProduct['picture'])): ?>
 
@@ -391,7 +392,7 @@ require_once('include/header.php');
                 </div>
               </div>
 
-              <?php endif; ?>
+            <?php endif; ?>
 
             <div class="field is-horizontal">
               <div class="field-label is-normal">
@@ -403,7 +404,7 @@ require_once('include/header.php');
                     <textarea
                       class="textarea"
                       name="description"
-                      placeholder="Entrer une description du produit"></textarea>
+                      placeholder="Entrer une description du produit"><?php if(isset($currentProduct['description'])) echo $currentProduct['description'] ?></textarea>
                   </div>
                 </div>
               </div>
@@ -415,10 +416,10 @@ require_once('include/header.php');
               </div>
               <div class="field-body">
                 <div class="field">
-                  <input class="input" type="text" name="price" placeholder="Entrer un prix produit" />
+                  <input class="input" type="text" name="price" placeholder="Entrer un prix produit" value="<?php if(isset($currentProduct['price'])) echo $currentProduct['price']; ?>"/>
                 </div>
                 <div class="field">
-                  <input class="input" type="text" name="stock" placeholder="Entrer un stock produit" />
+                  <input class="input" type="text" name="stock" placeholder="Entrer un stock produit" value="<?php if(isset($currentProduct['stock'])) echo $currentProduct['stock']; ?>"/>
                 </div>
               </div>
             </div>
