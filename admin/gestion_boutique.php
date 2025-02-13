@@ -378,6 +378,21 @@ require_once('include/header.php');
               </div>
             </div>
 
+            <?php if(isset($currentProduct['picture']) && !empty($currentProduct['picture'])): ?>
+
+            <div class="field is-horizontal">
+                <div class="field-label is-normal">
+                  <label class="label">Photo actuelle</label>
+                </div>
+                <div class="field-body">
+                  <div class="field">
+                    <img src="<?= $currentProduct['picture'] ?>" class="picture__product" alt="<?php if(isset($currentProduct['title'])) echo $currentProduct['title']; ?>">
+                  </div>
+                </div>
+              </div>
+
+              <?php endif; ?>
+
             <div class="field is-horizontal">
               <div class="field-label is-normal">
                 <label class="label">Description</label>
