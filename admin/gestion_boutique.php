@@ -181,13 +181,13 @@ require_once('include/header.php');
                     <?php foreach($arrayProduct as $key => $value):
                       if($key != 'id_product'):
                     ?>
-                    <td data-label="<?= ucfirst($key) ?>"><?= $value; ?>
+                    <td data-label="<?= ucfirst($key) ?>">
                         <?php if($key == 'picture'): ?>
                             <img src="<?= $value ?>" class="picture__product" alt="<?= $arrayProduct['title'] ?>">
                         <?php elseif($key == 'price'): ?>
-
+                            <?= $value . '€' ?>
                           <?php else: ?>
-
+                            <?= $value ?>
                           <?php endif; ?>
                     </td>
                     <?php 
@@ -201,20 +201,45 @@ require_once('include/header.php');
 
                     <td class="is-actions-cell">
                       <div class="buttons is-right">
-                        <button
+                        <a
+                        href=?action=update&id<?= $arrayProduct['id_product'] ?>
                           class="button is-small is-primary"
                           type="button">
                           <!-- <span class="icon"><i class="mdi mdi-eye"></i></span> -->
-                        </button>
+                          <span class="icon"><span class="mdi mdi-pencil"></span></span>
+                        </a>
                         <button
                           class="button is-small is-danger jb-modal"
-                          data-target="sample-modal"
+                          data-target="sample-modal-<?= $arrayProduct['id_product'] ?>"
                           type="button">
                           <span class="icon"><i class="mdi mdi-trash-can"></i></span>
                         </button>
                       </div>
                     </td>
                   </tr>
+
+                  <div id="sample-modal-<?= $arrayProduct['id_product'] ?>" class="modal">
+                    <div class="modal-background jb-modal-close"></div>
+                      <div class="modal-card">
+                        <header class="modal-card-head">
+                          <p class="modal-card-title">Confirmez la suppression</p>
+                          <button class="delete jb-modal-close" aria-label="close"></button>
+                        </header>
+                        <section class="modal-card-body">
+                          <p>Voulez-vous réellement supprimer ce produit ?</b></p>
+                          <p>This is sample modal</p>
+                        </section>
+                        <footer class="modal-card-foot">
+                          <button class="button jb-modal-close">Annuler</button>
+                          <a href="?action=delete&id=<?= $arrayProduct['id_product'] ?>" class="button is-danger jb-modal-close">Supprimer</a>
+                        </footer>
+                      </div>
+                      <button
+                        class="modal-close is-large jb-modal-close"
+                        aria-label="close"></button>
+                    </div>
+                  </div>
+
                   <?php endforeach; ?>
                 </tbody>
               </table>
