@@ -45,30 +45,30 @@ require_once('include/header.php');
           <h2>Nos <span>produits</span></h2>
       </div>
       <div class="row">
-          <?php foreach ($products as $product) : ?>
+          <?php 
+          //  Traitement pour l'affichage des produits dans une boucle
+          foreach ($products as $product) : ?>
               <div class="col-sm-6 col-md-4 col-lg-3">
                   <div class="box">
                       <div class="option_container">
                           <div class="options">
-                              <a href="fiche_produit.php?id_product=<?= htmlspecialchars($product['id_product']) ?>" class="option1">
-                                  <?= htmlspecialchars($product['name']) ?>
+                              <a href="fiche_produit.php?id_product=<?= $product['id_product'] ?>" class="option1">
+                                  <?= $product['title'] ?>
                               </a>
-                              <a href="panier.php?ajout=<?= htmlspecialchars($product['id_product']) ?>" class="option2">
+                              <a href="panier.php?ajout=<?=$product['id_product'] ?>" class="option2">
                                   Acheter maintenant
                               </a>
                           </div>
                       </div>
                       <div class="img-box">
-                      <?php if($key == 'picture'): ?>
-                        <img src="<?= $value ?>" class="picture__product" alt="<?= $product['title'] ?>">
+                          <img src= "<?= $product['picture'] ?>" alt="<?= $product['title'] ?>" />
                       </div>
                       <div class="detail-box">
-                          <h5><?= htmlspecialchars($product['name']) ?></h5>
-                          <h6><?= htmlspecialchars($product['price']) ?>€</h6>
+                          <h5><?= $product['title'] ?></h5>
+                          <h6><?= $product['price'] ?>€</h6>
                       </div>
                   </div>
               </div>
-              <?php endif; ?>
           <?php endforeach; ?>
       </div>
       <div class="btn-box">
