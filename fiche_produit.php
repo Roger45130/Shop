@@ -1,4 +1,29 @@
 <?php
+require_once('include/init.php');
+
+//  Récupérer la BDD
+$pdo = new PDO('mysql:host=localhost;dbname=shop;charset=utf8', 'root', '', [
+  PDO::ATTR_ERRMODE => PDO::ERRMODE_EXCEPTION,
+  PDO::ATTR_DEFAULT_FETCH_MODE => PDO::FETCH_ASSOC
+]);
+
+// Vérifier si un id_product est passé dans l'URL
+if (isset($_GET['id_product']) && is_numeric($_GET['id_product'])) {
+  $id_product = (int)$_GET['id_product'];
+
+  // Sélectionner le produit correspondant à l'id_product
+  $stmt = $pdo->prepare("SELECT * FROM product WHERE id_product = ?");
+  $stmt->execute([$id_product]);
+  $product = $stmt->fetch();
+
+  // Vérifier si le produit existe
+  if (!$product) {
+      die("Produit non trouvé");
+  }
+} else {
+  die("ID produit invalide");
+}
+
 require_once('include/header.php');
 ?>
   <!-- inner page section -->
@@ -18,20 +43,26 @@ require_once('include/header.php');
   <section class="product_section layout_padding">
     <div class="container">
       <div class="heading_container heading_center">
-        <h2>Our <span>products</span></h2>
+        <h2><?= $product['title'] ?></h2>
       </div>
       <div class="row">
+
         <div class="col-sm-6 col-md-6 col-lg-6">
           <div class="box">
             <div class="img-box">
-              <img src="assets/images-famma/p1.png" alt="" />
+              <img src="<?= $product['picture'] ?>" alt="<?= $product['title'] ?>" />
             </div>
           </div>
         </div>
         <div class="col-sm-6 col-md-6 col-lg-6">
           <div class="detail-box">
-            <h5>Men's Shirt</h5>
-            <h6>$75</h6>
+            <h5><?= $product['title'] ?></h5>
+            <h6><?= $product['price'] ?>€</h6>
+            <span><?= $product['reference'] ?></span><br>
+            <span><?= $product['color'] ?></spam><br>
+            <span><?= $product['public'] ?></spam><br>
+            <span><?= $product['size'] ?></spam><br>
+            <span><?= $product['description'] ?></spam>
           </div>
         </div>
       </div>

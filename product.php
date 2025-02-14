@@ -45,9 +45,7 @@ require_once('include/header.php');
           <h2>Nos <span>produits</span></h2>
       </div>
       <div class="row">
-          <?php 
-          //  Traitement pour l'affichage des produits dans une boucle
-          foreach ($products as $product) : ?>
+          <?php foreach ($products as $product) : ?>
               <div class="col-sm-6 col-md-4 col-lg-3">
                   <div class="box">
                       <div class="option_container">
