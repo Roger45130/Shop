@@ -15,13 +15,6 @@ if (isset($_GET['id_product']) && is_numeric($_GET['id_product'])) {
   $stmt = $pdo->prepare("SELECT * FROM product WHERE id_product = ?");
   $stmt->execute([$id_product]);
   $product = $stmt->fetch();
-
-  // Vérifier si le produit existe
-  if (!$product) {
-      die("Produit non trouvé");
-  }
-} else {
-  die("ID produit invalide");
 }
 
 require_once('include/header.php');
@@ -43,7 +36,7 @@ require_once('include/header.php');
   <section class="product_section layout_padding">
     <div class="container">
       <div class="heading_container heading_center">
-        <h2><?= $product['title'] ?></h2>
+        <h2>Our <span>products</span></h2>
       </div>
       <div class="row">
 
