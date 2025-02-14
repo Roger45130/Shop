@@ -1,6 +1,6 @@
 <?php 
 require_once('../include/init.php');
-
+$_SESSION['msg'] = false;
 // Si l'utilisateur n'est pas connecté ou est connecté mais non admin, on le redirige vers la page index.php
 
 if(!adminConnected()){
@@ -72,11 +72,15 @@ if(isset($_POST['submit']) && $_SERVER['REQUEST_METHOD'] === 'POST'){
         $data->bindValue(':id', $_GET['id'], PDO::PARAM_INT);
 
         $_SESSION['msgValidation'] = "Les modification ont été enregistrées.";
+        
       }else{
       $data = $connect_db->prepare("INSERT INTO product(reference, category, title, description, color, size, public, picture, price, stock) VALUE (:reference, :category, :title, :description, :color, :size, :public, :picture, :price, :stock)");
 
       $_SESSION['msgValidation'] = "L'enregistrement a été validé.";
       }
+
+      $_SESSION['msg'] = true;
+
       $data->bindValue(':reference', $_POST['reference'], PDO::PARAM_STR);
       $data->bindValue(':category', $_POST['category'], PDO::PARAM_STR);
       $data->bindValue(':title', $_POST['title'], PDO::PARAM_STR);
@@ -148,7 +152,7 @@ require_once('include/header.php');
       <?php if(isset($_SESSION['msgValidation'])): ?>
       <div class="notification is-primary">
         <button class="delete"></button>
-        <?php= $_SESSION['msgValidation']; ?>
+        <?= $_SESSION['msgValidation']; ?>
       </div>
       <?php endif; ?>
 
@@ -489,5 +493,7 @@ require_once('include/header.php');
 
 <?php 
 require_once('include/footer.php');
-unset($_SESSION['msgValidation']);
+if($_SESSION['msg'] == false){
+  unset($_SESSION['msgValidation']);
+}
 ?>
