@@ -9,6 +9,18 @@ if(!adminConnected()){
   header('location: ' . URL . 'index.php');
 }
 
+// Suppression du produit
+if(isset($_GET['action']) && $_GET['action'] == 'delete'){
+  $data = $connect_db->prepare("DELETE FROM product WHERE id_product = :id");
+  $data->bindValue(':id', $_GET['id'], PDO::PARAM_INT);
+  $data->execute();
+
+  $_SESSION['msgValidation'] = "L'article a été supprimé avec succés.";
+  $_SESSION['msg'] = true;
+
+  header('location: gestion_boutique.php');
+}
+
 if(isset($_POST['submit']) && $_SERVER['REQUEST_METHOD'] === 'POST'){
   // echo '<pre>'; print_r($_FILES); echo '</pre>';
   // echo '<pre>'; print_r($_POST); echo '</pre>';
@@ -256,7 +268,6 @@ require_once('include/header.php');
                         </header>
                         <section class="modal-card-body">
                           <p>Voulez-vous réellement supprimer ce produit ?</b></p>
-                          <p>This is sample modal</p>
                         </section>
                         <footer class="modal-card-foot">
                           <button class="button jb-modal-close">Annuler</button>
