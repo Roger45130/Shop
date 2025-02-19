@@ -36,22 +36,6 @@ require_once('include/header.php');
         </ul>
       </div>
     </div>
-    <!-- <div class="level-right">
-            <div class="level-item">
-              <div class="buttons is-right">
-                <a
-                  href="https://github.com/vikdiesel/admin-one-bulma-dashboard"
-                  target="_blank"
-                  class="button is-primary"
-                >
-                  <span class="icon"
-                    ><i class="mdi mdi-github-circle"></i
-                  ></span>
-                  <span>GitHub</span>
-                </a>
-              </div>
-            </div>
-          </div> -->
   </div>
 </section>
 <section class="section is-main-section">
@@ -109,26 +93,6 @@ require_once('include/header.php');
             </tbody>
           </table>
         </div>
-        <!-- <div class="notification">
-                <div class="level">
-                  <div class="level-left">
-                    <div class="level-item">
-                      <div class="buttons has-addons">
-                        <button type="button" class="button is-active">
-                          1
-                        </button>
-                        <button type="button" class="button">2</button>
-                        <button type="button" class="button">3</button>
-                      </div>
-                    </div>
-                  </div>
-                  <div class="level-right">
-                    <div class="level-item">
-                      <small>Page 1 of 3</small>
-                    </div>
-                  </div>
-                </div>
-              </div> -->
       </div>
     </div>
   </div>
@@ -185,26 +149,6 @@ require_once('include/header.php');
             </tbody>
           </table>
         </div>
-        <!-- <div class="notification">
-                <div class="level">
-                  <div class="level-left">
-                    <div class="level-item">
-                      <div class="buttons has-addons">
-                        <button type="button" class="button is-active">
-                          1
-                        </button>
-                        <button type="button" class="button">2</button>
-                        <button type="button" class="button">3</button>
-                      </div>
-                    </div>
-                  </div>
-                  <div class="level-right">
-                    <div class="level-item">
-                      <small>Page 1 of 3</small>
-                    </div>
-                  </div>
-                </div>
-              </div> -->
       </div>
     </div>
   </div>

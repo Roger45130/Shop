@@ -11,7 +11,7 @@ if (!adminConnected()) {
   exit();
 }
 
-// Vérifier si la colonne 'status' existe avant de faire une mise à jour
+// Vérifier si la colonne 'state' existe avant de faire une mise à jour
 $columnExists = $connect_db->query("SHOW COLUMNS FROM `order` LIKE 'state'")->rowCount();
 if ($columnExists === 0) {
   die("Erreur : La colonne 'state' n'existe pas dans la table `order`.");
@@ -27,7 +27,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['update_state'])) {
   $checkOrder->execute([$orderId]);
 
   if ($checkOrder->rowCount() > 0) {
-    $updateQuery = $connect_db->prepare("UPDATE `order` SET status = ? WHERE id_order = ?");
+    $updateQuery = $connect_db->prepare("UPDATE `order` SET state = ? WHERE id_order = ?");
     $updateQuery->execute([$newState, $orderId]);
   } else {
     die("Erreur : La commande sélectionnée n'existe pas.");
@@ -82,10 +82,10 @@ require_once('include/header.php');
                           <div class="control">
                             <div class="select is-fullwidth">
                               <?php
-                              // Vérification de l'existence de la clé 'status' pour éviter les erreurs
-                              $state = $order['status'] ?? 'treatment';
+                              // Vérification de l'existence de la clé 'state' pour éviter les erreurs
+                              $state = $order['state'] ?? 'treatment';
                               ?>
-                              <select name="status">
+                              <select name="state">
                                 <option value="treatment" <?= ($state == 'treatment') ? 'selected' : '' ?>>Traitement en cours</option>
                                 <option value="sent" <?= ($state == 'sent') ? 'selected' : '' ?>>Envoyé</option>
                                 <option value="delivered" <?= ($state == 'delivered') ? 'selected' : '' ?>>Livré</option>
@@ -98,7 +98,7 @@ require_once('include/header.php');
                             <div class="field">
                               <div class="field is-grouped">
                                 <div class="control">
-                                  <button type="submit" name="update_status" class="button is-primary">
+                                  <button type="submit" name="update_state" class="button is-primary">
                                     <span>Valider</span>
                                   </button>
                                 </div>
