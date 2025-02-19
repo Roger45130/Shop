@@ -1,408 +1,186 @@
-<?php 
+<?php
 require_once('../include/init.php');
 
-//  Si l'utilisateur n'est pas connecté ou est connecté mais non admin, on le redirige vers la page index.php
-if(!adminConnected()){
+// Connexion à la base de données `shop`
+$connect_db = new PDO('mysql:host=localhost;dbname=shop;charset=utf8', 'root', '');
+$connect_db->setAttribute(PDO::ATTR_ERRMODE, PDO::ERRMODE_EXCEPTION);
+
+// Vérification si l'utilisateur est admin
+if (!adminConnected()) {
   header('location: ' . URL . 'index.php');
+  exit();
 }
+
+// Vérifier si la colonne 'status' existe avant de faire une mise à jour
+$columnExists = $connect_db->query("SHOW COLUMNS FROM `order` LIKE 'state'")->rowCount();
+if ($columnExists === 0) {
+  die("Erreur : La colonne 'state' n'existe pas dans la table `order`.");
+}
+
+// Mise à jour du statut de la commande
+if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['update_state'])) {
+  $orderId = $_POST['order_id'];
+  $newState = $_POST['state'];
+
+  // Vérifier si la commande existe avant de faire la mise à jour
+  $checkOrder = $connect_db->prepare("SELECT id_order FROM `order` WHERE id_order = ?");
+  $checkOrder->execute([$orderId]);
+
+  if ($checkOrder->rowCount() > 0) {
+    $updateQuery = $connect_db->prepare("UPDATE `order` SET status = ? WHERE id_order = ?");
+    $updateQuery->execute([$newState, $orderId]);
+  } else {
+    die("Erreur : La commande sélectionnée n'existe pas.");
+  }
+}
+
+// Récupération des commandes depuis la table `order`
+$commandesData = $connect_db->query("SELECT * FROM `order`");
+$commande = $commandesData->fetchAll(PDO::FETCH_ASSOC);
+$nbCommandes = count($commande);
+
+// Récupération des utilisateurs pour associer les ID utilisateur aux commandes
+$usersData = $connect_db->query("SELECT id_user, lastName FROM `user`");
+$users = $usersData->fetchAll(PDO::FETCH_KEY_PAIR);
 
 require_once('include/header.php');
 ?>
-    <section class="section is-title-bar">
-      <div class="level">
-        <div class="level-left">
-          <div class="level-item">
-            <ul>
-              <li>Admin</li>
-              <li>Commandes</li>
-            </ul>
-          </div>
-        </div>
-        <!-- <div class="level-right">
-            <div class="level-item">
-              <div class="buttons is-right">
-                <a
-                  href="https://github.com/vikdiesel/admin-one-bulma-dashboard"
-                  target="_blank"
-                  class="button is-primary"
-                >
-                  <span class="icon"
-                    ><i class="mdi mdi-github-circle"></i
-                  ></span>
-                  <span>GitHub</span>
-                </a>
-              </div>
-            </div>
-          </div> -->
-      </div>
-    </section>
-    <section class="section is-main-section">
-      <div class="notification is-primary">
-        <button class="delete"></button>
-        Lorem ipsum, dolor sit amet consectetur adipisicing elit.
-      </div>
-      <div class="card has-table">
-        <header class="card-header">
-          <p class="card-header-title">
-            <span class="icon"><span class="mdi mdi-cart-outline"></span>
-            </span>
-            10 commandes
-          </p>
-          <a href="#" class="card-header-icon">
-            <span class="icon"><i class="mdi mdi-reload"></i></span>
-          </a>
-        </header>
-        <div class="card-content">
-          <div class="b-table has-pagination">
-            <div class="table-wrapper has-mobile-cards">
-              <table
-                class="table is-fullwidth is-striped is-hoverable is-fullwidth">
-                <thead>
-                  <tr>
-                    <th class="is-checkbox-cell">
-                      <label class="b-checkbox checkbox">
-                        <input type="checkbox" value="false" />
-                        <span class="check"></span>
-                      </label>
-                    </th>
-                    <th></th>
-                    <th>Name</th>
-                    <th>Company</th>
-                    <th>City</th>
-                    <th>Progress</th>
-                    <th>Created</th>
-                    <th></th>
-                  </tr>
-                </thead>
-                <tbody>
-                  <tr>
-                    <td class="is-checkbox-cell">
-                      <label class="b-checkbox checkbox">
-                        <input type="checkbox" value="false" />
-                        <span class="check"></span>
-                      </label>
-                    </td>
-                    <td class="is-image-cell">
-                      <div class="image">
-                        <img
-                          src="https://avatars.dicebear.com/v2/initials/rebecca-bauch.svg"
-                          class="is-rounded" />
-                      </div>
-                    </td>
-                    <td data-label="Name">Rebecca Bauch</td>
-                    <td data-label="Company">Daugherty-Daniel</td>
-                    <td data-label="City">South Cory</td>
-                    <td data-label="Progress" class="is-progress-cell">
-                      <progress
-                        max="100"
-                        class="progress is-small is-primary"
-                        value="79">
-                        79
-                      </progress>
-                    </td>
-                    <td data-label="Created">
-                      <small
-                        class="has-text-grey is-abbr-like"
-                        title="Oct 25, 2020">Oct 25, 2020</small>
-                    </td>
-                    <td class="is-actions-cell">
-                      <div class="buttons is-right">
-                        <button
-                          class="button is-small is-primary"
-                          type="button">
-                          <span class="icon"><i class="mdi mdi-eye"></i></span>
-                        </button>
-                        <button
-                          class="button is-small is-danger jb-modal"
-                          data-target="sample-modal"
-                          type="button">
-                          <span class="icon"><i class="mdi mdi-trash-can"></i></span>
-                        </button>
-                      </div>
-                    </td>
-                  </tr>
-                </tbody>
-              </table>
-            </div>
-            <!-- <div class="notification">
-                <div class="level">
-                  <div class="level-left">
-                    <div class="level-item">
-                      <div class="buttons has-addons">
-                        <button type="button" class="button is-active">
-                          1
-                        </button>
-                        <button type="button" class="button">2</button>
-                        <button type="button" class="button">3</button>
-                      </div>
-                    </div>
-                  </div>
-                  <div class="level-right">
-                    <div class="level-item">
-                      <small>Page 1 of 3</small>
-                    </div>
-                  </div>
-                </div>
-              </div> -->
-          </div>
-        </div>
-      </div>
-    </section>
 
-    <section class="section is-main-section">
-      <div class="card has-table">
-        <header class="card-header">
-          <p class="card-header-title">
-            <span class="icon"><span class="mdi mdi-cart-arrow-down"></span>
-            </span>
-            Détails commande
-          </p>
-          <a href="#" class="card-header-icon">
-            <span class="icon"><i class="mdi mdi-reload"></i></span>
-          </a>
-        </header>
-        <div class="card-content">
-          <div class="b-table has-pagination">
-            <div class="table-wrapper has-mobile-cards">
-              <table
-                class="table is-fullwidth is-striped is-hoverable is-fullwidth">
-                <thead>
-                  <tr>
-                    <th class="is-checkbox-cell">
-                      <label class="b-checkbox checkbox">
-                        <input type="checkbox" value="false" />
-                        <span class="check"></span>
-                      </label>
-                    </th>
-                    <th></th>
-                    <th>Name</th>
-                    <th>Company</th>
-                    <th>City</th>
-                    <th>Progress</th>
-                    <th>Created</th>
-                    <th></th>
-                  </tr>
-                </thead>
-                <tbody>
-                  <tr>
-                    <td class="is-checkbox-cell">
-                      <label class="b-checkbox checkbox">
-                        <input type="checkbox" value="false" />
-                        <span class="check"></span>
-                      </label>
-                    </td>
-                    <td class="is-image-cell">
-                      <div class="image">
-                        <img
-                          src="https://avatars.dicebear.com/v2/initials/rebecca-bauch.svg"
-                          class="is-rounded" />
+<section class="section is-main-section">
+  <div class="card has-table">
+    <header class="card-header">
+      <p class="card-header-title">
+        <span class="icon"><span class="mdi mdi-cart-outline"></span></span>
+        Commandes (<?= $nbCommandes ?> commandes)
+      </p>
+    </header>
+    <div class="card-content">
+      <div class="b-table has-pagination">
+        <div class="table-wrapper has-mobile-cards">
+          <table class="table is-fullwidth is-striped is-hoverable is-fullwidth">
+            <thead>
+              <tr>
+                <th>ID Commande</th>
+                <th>Client</th>
+                <th>Date</th>
+                <th>Etats</th>
+                <th>Total</th>
+                <th>Actions</th>
+              </tr>
+            </thead>
+            <tbody>
+              <?php foreach ($commande as $order): ?>
+                <tr>
+                  <td><?= htmlspecialchars($order['id_order']) ?></td>
+                  <td><?= htmlspecialchars($users[$order['user_id']] ?? 'Inconnu') ?></td>
+                  <td><?= date("d/m/Y", strtotime($order['date'])) ?></td>
+                  <td>
+                    <form method="post">
+                      <input type="hidden" name="order_id" value="<?= htmlspecialchars($order['id_order']) ?>">
+                      <div class="field-body">
+                        <div class="field is-narrow">
+                          <div class="control">
+                            <div class="select is-fullwidth">
+                              <?php
+                              // Vérification de l'existence de la clé 'status' pour éviter les erreurs
+                              $state = $order['status'] ?? 'treatment';
+                              ?>
+                              <select name="status">
+                                <option value="treatment" <?= ($state == 'treatment') ? 'selected' : '' ?>>Traitement en cours</option>
+                                <option value="sent" <?= ($state == 'sent') ? 'selected' : '' ?>>Envoyé</option>
+                                <option value="delivered" <?= ($state == 'delivered') ? 'selected' : '' ?>>Livré</option>
+                              </select>
+                            </div>
+                          </div>
+                        </div>
+                        <div class="field is-horizontal">
+                          <div class="field-body">
+                            <div class="field">
+                              <div class="field is-grouped">
+                                <div class="control">
+                                  <button type="submit" name="update_status" class="button is-primary">
+                                    <span>Valider</span>
+                                  </button>
+                                </div>
+                              </div>
+                            </div>
+                          </div>
+                        </div>
                       </div>
-                    </td>
-                    <td data-label="Name">Rebecca Bauch</td>
-                    <td data-label="Company">Daugherty-Daniel</td>
-                    <td data-label="City">South Cory</td>
-                    <td data-label="Progress" class="is-progress-cell">
-                      <progress
-                        max="100"
-                        class="progress is-small is-primary"
-                        value="79">
-                        79
-                      </progress>
-                    </td>
-                    <td data-label="Created">
-                      <small
-                        class="has-text-grey is-abbr-like"
-                        title="Oct 25, 2020">Oct 25, 2020</small>
-                    </td>
-                    <td class="is-actions-cell">
-                      <div class="buttons is-right">
-                        <button
-                          class="button is-small is-primary"
-                          type="button">
-                          <span class="icon"><i class="mdi mdi-eye"></i></span>
-                        </button>
-                        <button
-                          class="button is-small is-danger jb-modal"
-                          data-target="sample-modal"
-                          type="button">
-                          <span class="icon"><i class="mdi mdi-trash-can"></i></span>
-                        </button>
-                      </div>
-                    </td>
-                  </tr>
-                </tbody>
-              </table>
-            </div>
-            <!-- <div class="notification">
-                <div class="level">
-                  <div class="level-left">
-                    <div class="level-item">
-                      <div class="buttons has-addons">
-                        <button type="button" class="button is-active">
-                          1
-                        </button>
-                        <button type="button" class="button">2</button>
-                        <button type="button" class="button">3</button>
-                      </div>
-                    </div>
-                  </div>
-                  <div class="level-right">
-                    <div class="level-item">
-                      <small>Page 1 of 3</small>
-                    </div>
-                  </div>
-                </div>
-              </div> -->
-          </div>
-        </div>
-      </div>
-    </section>
-
-    <section class="section is-main-section">
-      <div class="card">
-        <header class="card-header">
-          <p class="card-header-title">
-            <span class="icon"><i class="mdi mdi-ballot"></i></span>
-            Modification commande
-          </p>
-        </header>
-        <div class="card-content">
-          <form method="get">
-            <div class="field is-horizontal">
-              <div class="field-label is-normal">
-                <label class="label">From</label>
-              </div>
-              <div class="field-body">
-                <div class="field">
-                  <p class="control is-expanded has-icons-left">
-                    <input class="input" type="text" placeholder="Name" />
-                    <span class="icon is-small is-left"><i class="mdi mdi-account"></i></span>
-                  </p>
-                </div>
-                <div class="field">
-                  <p
-                    class="control is-expanded has-icons-left has-icons-right">
-                    <input
-                      class="input is-success"
-                      type="email"
-                      placeholder="Email"
-                      value="alex@smith.com" />
-                    <span class="icon is-small is-left"><i class="mdi mdi-mail"></i></span>
-                    <span class="icon is-small is-right"><i class="mdi mdi-check"></i></span>
-                  </p>
-                </div>
-              </div>
-            </div>
-            <div class="field is-horizontal">
-              <div class="field-label"></div>
-              <div class="field-body">
-                <div class="field is-expanded">
-                  <div class="field has-addons">
-                    <p class="control">
-                      <a class="button is-static">+33</a>
-                    </p>
-                    <p class="control is-expanded">
-                      <input
-                        class="input"
-                        type="tel"
-                        placeholder="Your phone number" />
-                    </p>
-                  </div>
-                  <p class="help">Do not enter the first zero</p>
-                </div>
-              </div>
-            </div>
-            <div class="field is-horizontal">
-              <div class="field-label is-normal">
-                <label class="label">Department</label>
-              </div>
-              <div class="field-body">
-                <div class="field is-narrow">
-                  <div class="control">
-                    <div class="select is-fullwidth">
-                      <select>
-                        <option>Business development</option>
-                        <option>Marketing</option>
-                        <option>Sales</option>
-                      </select>
-                    </div>
-                  </div>
-                </div>
-              </div>
-            </div>
-            <div class="field is-horizontal">
-              <div class="field-label is-normal">
-                <label class="label">Subject</label>
-              </div>
-              <div class="field-body">
-                <div class="field">
-                  <div class="control">
-                    <input
-                      class="input is-danger"
-                      type="text"
-                      placeholder="e.g. Partnership opportunity" />
-                  </div>
-                  <p class="help is-danger">This field is required</p>
-                </div>
-              </div>
-            </div>
-
-            <div class="field is-horizontal">
-              <div class="field-label is-normal">
-                <label class="label">Question</label>
-              </div>
-              <div class="field-body">
-                <div class="field">
-                  <div class="control">
-                    <textarea
-                      class="textarea"
-                      placeholder="Explain how we can help you"></textarea>
-                  </div>
-                </div>
-              </div>
-            </div>
-            <div class="field is-horizontal">
-              <div class="field-label">
-                <label class="label">Switch</label>
-              </div>
-              <div class="field-body">
-                <div class="field">
-                  <label class="switch is-rounded"><input type="checkbox" value="false" />
-                    <span class="check"></span>
-                    <span class="control-label">Default</span>
-                  </label>
-                </div>
-              </div>
-            </div>
-            <hr />
-            <div class="field is-horizontal">
-              <div class="field-label">
-                <!-- Left empty for spacing -->
-              </div>
-              <div class="field-body">
-                <div class="field">
-                  <div class="field is-grouped">
-                    <div class="control">
-                      <button type="submit" class="button is-primary">
-                        <span>Submit</span>
+                    </form>
+                  </td>
+                  <td><?= htmlspecialchars($order['rising']) ?> €</td>
+                  <td>
+                    <form method="post">
+                      <input type="hidden" name="selected_order" value="<?= $order['id_order'] ?>">
+                      <button class="button is-small is-primary" type="submit">
+                        <span class="icon"><i class="mdi mdi-eye mdi-18px"></i></span>
                       </button>
-                    </div>
-                    <div class="control">
-                      <button
-                        type="button"
-                        class="button is-primary is-outlined">
-                        <span>Reset</span>
-                      </button>
-                    </div>
-                  </div>
-                </div>
-              </div>
-            </div>
-          </form>
+                    </form>
+                  </td>
+                </tr>
+              <?php endforeach; ?>
+            </tbody>
+          </table>
         </div>
       </div>
-    </section>
+    </div>
+  </div>
+</section>
 
-<?php 
+<?php if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['selected_order'])):
+  $selectedOrderId = $_POST['selected_order'];
+  $productsQuery = $connect_db->prepare("SELECT p.reference, p.title, p.size, p.picture, od.quantity, p.price FROM `order_details` od JOIN `product` p ON od.product_id = p.id_product WHERE od.order_id = ?");
+  $productsQuery->execute([$selectedOrderId]);
+  $products = $productsQuery->fetchAll(PDO::FETCH_ASSOC);
+  $productCount = count($products);
+?>
+
+  <section class="section is-main-section">
+    <div class="card has-table">
+      <header class="card-header">
+        <p class="card-header-title">
+          <span class="icon"><span class="mdi mdi-cart-arrow-down"></span></span>
+          Détails commande (<?= $productCount ?> articles)
+        </p>
+      </header>
+      <div class="card-content">
+        <div class="b-table has-pagination">
+          <div class="table-wrapper has-mobile-cards">
+            <table class="table is-fullwidth is-striped is-hoverable is-fullwidth">
+              <thead>
+                <tr>
+                  <th>Référence Article</th>
+                  <th>Titre</th>
+                  <th>Taille</th>
+                  <th>Photo</th>
+                  <th>Quantité</th>
+                  <th>Prix</th>
+                </tr>
+              </thead>
+              <tbody>
+                <?php foreach ($products as $product): ?>
+                  <tr>
+                    <td><?= htmlspecialchars($product['reference']) ?></td>
+                    <td><?= htmlspecialchars($product['title']) ?></td>
+                    <td><?= htmlspecialchars($product['size']) ?></td>
+                    <td><img src="<?= htmlspecialchars($product['picture']) ?>" width="70px"></td>
+                    <td><?= htmlspecialchars($product['quantity']) ?></td>
+                    <td><?= htmlspecialchars($product['price']) ?> €</td>
+                  </tr>
+                <?php endforeach; ?>
+              </tbody>
+            </table>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+<?php endif; ?>
+
+<?php
 require_once('include/footer.php');
+if ($_SESSION['msg'] == false) {
+  unset($_SESSION['msgValidation']);
+}
 ?>
