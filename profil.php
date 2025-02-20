@@ -107,27 +107,27 @@ require_once('include/header.php');
                 <form method="post" action="profil.php">
                   <div class="detail-box d-flex align-items-center justify-content-between">
                     <h5>Prénom</h5>
-                    <input type="text" name="firstName" value="<?= $_SESSION['user']['firstName'] ?>" required />
+                    <input type="text" name="firstName" class="ml-3 form-control border-success" value="<?= $_SESSION['user']['firstName'] ?>" required />
                   </div>
-                  <div class="detail-box d-flex align-items-center justify-content-between">
+                  <div class="detail-box d-flex align-items-center justify-content-between py-2 rounded-3">
                     <h5>Nom</h5>
-                    <input type="text" name="lastName" value="<?= $_SESSION['user']['lastName'] ?>" required />
+                    <input type="text" name="lastName" class="ml-3 form-control border-success" value="<?= $_SESSION['user']['lastName'] ?>" required />
                   </div>
-                  <div class="detail-box d-flex align-items-center justify-content-between">
+                  <div class="detail-box d-flex align-items-center justify-content-between py-2 rounded-3">
                     <h5>Email</h5>
-                    <input type="email" name="email" value="<?= $_SESSION['user']['email'] ?>" required />
+                    <input type="email" name="email" class="ml-3 form-control border-success" value="<?= $_SESSION['user']['email'] ?>" required />
                   </div>
-                  <div class="detail-box d-flex align-items-center justify-content-between">
+                  <div class="detail-box d-flex align-items-center justify-content-between py-2 rounded-3">
                     <h5>Adresse</h5>
-                    <input type="text" name="address" value="<?= $_SESSION['user']['address'] ?>" required />
+                    <input type="text" name="address" class="ml-3 form-control border-success" value="<?= $_SESSION['user']['address'] ?>" required />
                   </div>
-                  <div class="detail-box d-flex align-items-center justify-content-between">
+                  <div class="detail-box d-flex align-items-center justify-content-between py-2 rounded-3">
                     <h5>Ville</h5>
-                    <input type="text" name="city" value="<?= $_SESSION['user']['city'] ?>" required />
+                    <input type="text" name="city" class="ml-3 form-control border-success" value="<?= $_SESSION['user']['city'] ?>" required />
                   </div>
-                  <div class="detail-box d-flex align-items-center justify-content-between">
+                  <div class="detail-box d-flex align-items-center justify-content-between py-2 rounded-3">
                     <h5>Code postal</h5>
-                    <input type="text" name="zipcode" value="<?= $_SESSION['user']['zipcode'] ?>" required />
+                    <input type="text" name="zipcode" class="ml-3 form-control border-success" value="<?= $_SESSION['user']['zipcode'] ?>" required />
                   </div>
                   <div class="text-center mt-3">
                     <button type="submit" name="update_profile" class="btn btn-success">Valider</button>
