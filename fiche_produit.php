@@ -8,17 +8,17 @@ if (isset($_POST['submit_comment'])) {
     if ($_SESSION['user']['firstName'] === $_POST['firstName'] && $_SESSION['user']['lastName'] === $_POST['lastName']) {
       $user_id = $_SESSION['user']['id_user'];
       $commentText = $_POST['commentText'];
-      $icon = $_POST['icon'];
+      $icon = isset($_POST['icon']) ? $_POST['icon'] : '0';
       // La date est automatiquement renseignée avec la date du jour
       $date = date('Y-m-d H:i:s');
       
-      // Insertion du commentaire dans la table testimonial (en supposant que la colonne 'rating' existe)
+      // Insertion du commentaire dans la table testimonial
       $stmt = $connect_db->prepare("INSERT INTO testimonial (message, date, user_id, icon) VALUES (:message, :date, :user_id, :icon)");
       $stmt->execute([
         ':message' => $commentText,
         ':date'    => $date,
         ':user_id' => $user_id,
-        ':icon'  => $icon
+        ':icon'    => $icon
       ]);
       $success = "Votre commentaire a été enregistré avec succès.";
     } else {
