@@ -70,9 +70,6 @@ require_once('include/header.php');
                 </div>
             <?php endforeach; ?>
         </div>
-        <div class="btn-box">
-            <a href="produits.php"> Voir tous les produits </a>
-        </div>
     </div>
 </section>
 
