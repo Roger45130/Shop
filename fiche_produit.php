@@ -78,12 +78,12 @@ require_once('include/header.php');
       </div>
     </div>
     <div class="btn-box">
-      <a href=""> View All products </a>
+      <a href="product.php">Voir tous les produits</a>
     </div>
   </div>
 </section>
 <!-- end product section -->
- 
+
 <!-- footer section -->
 
 <?php
