@@ -83,6 +83,7 @@ require_once('include/header.php');
   </div>
 </section>
 <!-- end product section -->
+ 
 <!-- footer section -->
 
 <?php

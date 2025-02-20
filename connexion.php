@@ -106,6 +106,7 @@ require_once('include/header.php');
     </div>
   </section>
 
+  
 <?php
 require_once('include/footer.php');
 //  On supprime le message de validation d'inscription dans la session, afin qu'il ne soit plus affiché à chaque visite sur la page d'authentification.

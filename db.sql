@@ -25,7 +25,7 @@ CREATE TABLE `product` (
   size VARCHAR(5) NOT NULL,
   public enum('homme','femme','mixte') NOT NULL,
   picture VARCHAR(250) DEFAULT NULL,
-  price NUMERIC(5, 5) NOT NULL,
+  price NUMERIC(5, 2) NOT NULL,
   stock INT(5) NOT NULL,
   PRIMARY KEY (id_product)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
@@ -33,7 +33,7 @@ CREATE TABLE `product` (
 CREATE TABLE `order` (
   id_order INT(11) NOT NULL AUTO_INCREMENT,
   user_id INT(11) NOT NULL,
-  rising NUMERIC(5, 5) NOT NULL,
+  rising NUMERIC(5, 2) NOT NULL,
   date DATETIME NOT NULL,
   state ENUM('treatment','sent','delivered') NOT NULL,
   PRIMARY KEY (id_order),
@@ -48,7 +48,7 @@ CREATE TABLE `order_details` (
   order_id INT(11) NOT NULL,
   product_id int(11) DEFAULT NULL,
   quantity INT(3) NOT NULL,
-  price NUMERIC(5, 5) NOT NULL,
+  price NUMERIC(5, 2) NOT NULL,
   PRIMARY KEY (id_order_details),
   INDEX (order_id, product_id)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;

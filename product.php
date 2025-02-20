@@ -75,6 +75,7 @@ require_once('include/header.php');
         </div>
     </div>
 </section>
+
 <!-- end product section -->
 
 <?php require_once('include/footer.php'); ?>

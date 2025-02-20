@@ -531,6 +531,7 @@ require_once('include/header.php');
     </div>
   </section>
   <!-- end client section -->
+   
 <?php
 require_once('include/footer.php');
 ?>

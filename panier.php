@@ -123,7 +123,7 @@ require_once('include/header.php');
                         for ($i = 0; $i < count($_SESSION['cart']['id_product']); $i++): ?>
                             <tr>
                                 <td><?= ucfirst($_SESSION['cart']['title'][$i]); ?></td>
-                                <td><img src="<?= $_SESSION['cart']['picture'][$i] ?>" class="product__picture" alt="<?= $_SESSION['cart']['title'][$i] ?>"></td>
+                                <td><img src="<?= $_SESSION['cart']['picture'][$i] ?>" class="product__picture picture__product" alt="<?= $_SESSION['cart']['title'][$i] ?>"></td>
 
                                 <td><?= $_SESSION['cart']['reference'][$i]; ?></td>
                                 <td><?= $_SESSION['cart']['quantity'][$i]; ?></td>
@@ -169,6 +169,7 @@ require_once('include/header.php');
         </div>
     </div>
 </section>
+
 <!-- end product section -->
 <!-- footer section -->
 

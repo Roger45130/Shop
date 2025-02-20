@@ -1137,11 +1137,6 @@ form input[type="submit"]:focus {
 https://template.hasthemes.com/noraure/noraure/index.html
 https://preview.hasthemes.com/xoss-preview/xoss/index.html */
 
-
-.error-text-color {
-  color: #f7444e
-}
-
-.product__picture {
-  width: 75px;
+.product__picture{
+  width: 70px;
 }
