@@ -1,116 +1,179 @@
+<!-- <?php
+        // echo '<pre>';
+        // print_r($_SERVER);
+        // echo '</pre>';
+        ?> -->
+
 <!DOCTYPE html>
-<html
-  lang="en"
-  class="has-aside-left has-aside-mobile-transition has-navbar-fixed-top has-aside-expanded">
+<html>
 
 <head>
-  <meta charset="utf-8" />
-  <meta http-equiv="X-UA-Compatible" content="IE=edge" />
-  <meta name="viewport" content="width=device-width, initial-scale=1" />
-  <title>Boutique Admin Dashboard</title>
-
-  <!-- Bulma is included -->
-  <link rel="stylesheet" href="../assets/css/main.min.css" />
-
-  <!-- Fonts -->
-  <link rel="dns-prefetch" href="https://fonts.gstatic.com" />
-  <link
-    href="https://fonts.googleapis.com/css?family=Nunito"
-    rel="stylesheet"
-    type="text/css" />
+    <!-- Basic -->
+    <meta charset="utf-8" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+    <!-- Mobile Metas -->
+    <meta
+        name="viewport"
+        content="width=device-width, initial-scale=1, shrink-to-fit=no" />
+    <!-- Site Metas -->
+    <meta name="keywords" content="" />
+    <meta name="description" content="" />
+    <meta name="author" content="" />
+    <link rel="shortcut icon" href="assets/images-famma/favicon.png" type="" />
+    <title>Famms - Fashion HTML Template</title>
+    <!-- bootstrap core css -->
+    <link
+        rel="stylesheet"
+        type="text/css"
+        href="assets/css-famma/bootstrap.css" />
+    <!-- font awesome style -->
+    <link href="assets/css-famma/font-awesome.min.css" rel="stylesheet" />
+    <!-- Custom styles for this template -->
+    <link href="assets/css-famma/style.css" rel="stylesheet" />
+    <!-- responsive style -->
+    <link href="assets/css-famma/responsive.css" rel="stylesheet" />
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.7.2/css/all.min.css" integrity="sha512-Evv84Mr4kqVGRNSgIGL/F/aIDqQb7xQ2vcrdIwxfjThSH8CSR7PBEakCr51Ck+w+/U6swU2Im1vVX0SVk9ABhg==" crossorigin="anonymous" referrerpolicy="no-referrer" />
 </head>
 
 <body>
-  <div id="app">
-    <nav id="navbar-main" class="navbar is-fixed-top">
-      <div class="navbar-brand">
-        <a class="navbar-item is-hidden-desktop jb-aside-mobile-toggle">
-          <span class="icon"><i class="mdi mdi-forwardburger mdi-24px"></i></span>
-        </a>
-      </div>
-      <div class="navbar-menu fadeIn animated faster" id="navbar-menu">
-        <div class="navbar-end">
-          <div
-            class="navbar-item has-dropdown has-dropdown-with-icons has-divider has-user-avatar is-hoverable">
-            <a class="navbar-link is-arrowless">
-              <div class="is-user-avatar">
-                <img
-                  src="https://avatars.dicebear.com/v2/initials/john-doe.svg"
-                  alt="John Doe" />
-              </div>
-              <div class="is-user-name"><span>John Doe</span></div>
-              <!-- <span class="icon"><i class="mdi mdi-chevron-down"></i></span> -->
-            </a>
-            <!-- <div class="navbar-dropdown">
-                <a href="profile.php" class="navbar-item">
-                  <span class="icon"><i class="mdi mdi-account"></i></span>
-                  <span>My Profile</span>
-                </a>
-                <a class="navbar-item">
-                  <span class="icon"><i class="mdi mdi-settings"></i></span>
-                  <span>Settings</span>
-                </a>
-                <a class="navbar-item">
-                  <span class="icon"><i class="mdi mdi-email"></i></span>
-                  <span>Messages</span>
-                </a>
-                <hr class="navbar-divider" />
-                <a class="navbar-item">
-                  <span class="icon"><i class="mdi mdi-logout"></i></span>
-                  <span>Log Out</span>
-                </a>
-              </div> -->
-          </div>
-          <a title="Log out" class="navbar-item is-desktop-icon-only">
-            <span class="icon"><i class="mdi mdi-logout"></i></span>
-            <span>Log out</span>
-          </a>
-        </div>
-      </div>
-    </nav>
-    <aside class="aside is-placed-left is-expanded">
-      <div class="aside-tools">
-        <div class="aside-tools-label">
-          <span><b>Boutique</b> Admin</span>
-        </div>
-      </div>
-      <div class="menu is-menu-main">
-        <p class="menu-label">General</p>
-        <ul class="menu-list">
-          <li>
-            <a href="index.php" class="has-icon">
-              <span class="icon"><i class="mdi mdi-desktop-mac"></i></span>
-              <span class="menu-item-label">Dashboard</span>
-            </a>
-          </li>
-        </ul>
-        <p class="menu-label">MENU</p>
-        <ul class="menu-list">
-          <li>
-            <a href="gestion_boutique.php" class="is-active has-icon">
-              <span class="icon has-update-mark"><span class="mdi mdi-store"></span>
-              </span>
-              <span class="menu-item-label">Boutique</span>
-            </a>
-          </li>
-          <li>
-            <a href="gestion_commande.php" class="has-icon">
-              <span class="icon"><span class="mdi mdi-sheep"></span> </span>
-              <span class="menu-item-label">Commandes</span>
-            </a>
-          </li>
-          <li>
-            <a href="gestion_user.php" class="has-icon">
-              <span class="icon"><i class="mdi mdi-account-circle"></i></span>
-              <span class="menu-item-label">Utilisateurs</span>
-            </a>
-          </li>
-          <li>
-            <a href="../index.php" title="Log out" class="has-icon">
-              <span class="icon"><i class="mdi mdi-logout"></i></span>
-              <span>Quitter</span>
-            </a>
-          </li>
-        </ul>
-      </div>
-    </aside>
+    <div class="hero_area">
+        <!-- header section strats -->
+        <header class="header_section">
+            <div class="container">
+                <nav class="navbar navbar-expand-lg custom_nav-container">
+                    <a class="navbar-brand" href="index.php"><img width="250" src="assets/images-famma/logo.png" alt="#" /></a>
+                    <button
+                        class="navbar-toggler"
+                        type="button"
+                        data-toggle="collapse"
+                        data-target="#navbarSupportedContent"
+                        aria-controls="navbarSupportedContent"
+                        aria-expanded="false"
+                        aria-label="Toggle navigation">
+                        <span class=""> </span>
+                    </button>
+                    <div class="collapse navbar-collapse" id="navbarSupportedContent">
+                        <ul class="navbar-nav">
+                            <li class="nav-item <?php activeLink('/PHP/shop/index.php') ?>">
+                                <a class="nav-link" href="index.php">Home <span class="sr-only">(current)</span></a>
+                            </li>
+                            <li class="nav-item <?php activeLink('/PHP/shop/product.php') ?>">
+                                <a class="nav-link" href="product.php">Boutique</a>
+                            </li>
+                            <li class="nav-item <?php activeLink('/PHP/shop/contact.php') ?>">
+                                <a class="nav-link" href="contact.php">Contact</a>
+                            </li>
+
+                            <?php if (!userConnected()): // On entre dans la condition IF dans le cas où l'idice 'user' n'est pas définit dans la session, donc l'utilisateur n'est pas authentifié 
+                            ?>
+                                <li class="nav-item <?php activeLink('/PHP/shop/connexion.php') ?>">
+                                    <a class="nav-link" href="connexion.php">Identifiez-vous</a>
+                                </li>
+                                <li class="nav-item <?php activeLink('/PHP/shop/inscription.php') ?>">
+                                    <a class="nav-link" href="inscription.php">Inscription</a>
+                                </li>
+                            <?php endif; ?>
+
+                            <?php if (userConnected()): // On entre dans la condition IF dans le cas où l'idice 'user' est définit dans la session, donc l'utilisateur est authentifié  
+                            ?>
+                                <li class="nav-item <?php activeLink('/PHP/shop/inscription.php') ?>">
+                                    <a class="nav-link" href="profil.php">Mon compte</a>
+                                </li>
+                                <li class="nav-item">
+                                    <a class="nav-link" href="connexion.php?action=logout">Déconnexion</a>
+                                </li>
+                            <?php endif; ?>
+
+                            <?php if (adminConnected()): ?>
+                                <li class="nav-item dropdown">
+                                    <a
+                                        class="nav-link dropdown-toggle"
+                                        href="#"
+                                        data-toggle="dropdown"
+                                        role="button"
+                                        aria-haspopup="true"
+                                        aria-expanded="true">
+                                        <span class="nav-label">BackOffice</span><span class="caret"></span></a>
+                                    <ul class="dropdown-menu">
+                                        <li><a href="admin/gestion_boutique.php">Boutique</a></li>
+                                        <li><a href="admin/gestion_commande.php">Commandes</a></li>
+                                        <li><a href="admin/gestion_user.php">Utilisateurs</a></li>
+                                    </ul>
+                                </li>
+                            <?php endif; ?>
+
+                            <li class="nav-item d-flex align-items-start <?php activeLink('/PHP/shop/panier.php') ?>">
+                                <a class="nav-link" href="panier.php">
+                                    <svg
+                                        version="1.1"
+                                        id="Capa_1"
+                                        xmlns="http://www.w3.org/2000/svg"
+                                        xmlns:xlink="http://www.w3.org/1999/xlink"
+                                        x="0px"
+                                        y="0px"
+                                        viewBox="0 0 456.029 456.029"
+                                        style="enable-background: new 0 0 456.029 456.029"
+                                        xml:space="preserve">
+                                        <g>
+                                            <g>
+                                                <path
+                                                    d="M345.6,338.862c-29.184,0-53.248,23.552-53.248,53.248c0,29.184,23.552,53.248,53.248,53.248
+                                          c29.184,0,53.248-23.552,53.248-53.248C398.336,362.926,374.784,338.862,345.6,338.862z" />
+                                            </g>
+                                        </g>
+                                        <g>
+                                            <g>
+                                                <path
+                                                    d="M439.296,84.91c-1.024,0-2.56-0.512-4.096-0.512H112.64l-5.12-34.304C104.448,27.566,84.992,10.67,61.952,10.67H20.48
+                                          C9.216,10.67,0,19.886,0,31.15c0,11.264,9.216,20.48,20.48,20.48h41.472c2.56,0,4.608,2.048,5.12,4.608l31.744,216.064
+                                          c4.096,27.136,27.648,47.616,55.296,47.616h212.992c26.624,0,49.664-18.944,55.296-45.056l33.28-166.4
+                                          C457.728,97.71,450.56,86.958,439.296,84.91z" />
+                                            </g>
+                                        </g>
+                                        <g>
+                                            <g>
+                                                <path
+                                                    d="M215.04,389.55c-1.024-28.16-24.576-50.688-52.736-50.688c-29.696,1.536-52.224,26.112-51.2,55.296
+                                          c1.024,28.16,24.064,50.688,52.224,50.688h1.024C193.536,443.31,216.576,418.734,215.04,389.55z" />
+                                            </g>
+                                        </g>
+                                        <g></g>
+                                        <g></g>
+                                        <g></g>
+                                        <g></g>
+                                        <g></g>
+                                        <g></g>
+                                        <g></g>
+                                        <g></g>
+                                        <g></g>
+                                        <g></g>
+                                        <g></g>
+                                        <g></g>
+                                        <g></g>
+                                        <g></g>
+                                        <g></g>
+                                    </svg>
+                                </a>
+
+                                <!-- Exercice : Afficher le nombre de produit dans le panier de la session -->
+                                <?php
+                                $nbProducts = 0;
+                                if (isset($_SESSION['cart']))
+                                    $nbProducts = array_sum($_SESSION['cart']['quantity']);
+
+                                //array_sum() : fonction prédéfinié qui calcul la somme des éléments d'un tableau Array.
+                                ?>
+                                <span class="badge bg-success text-white mt-1"><?= $nbProducts ?></span>
+
+                            </li>
+                            <!-- <form class="form-inline">
+                <button class="btn my-2 my-sm-0 nav_search-btn" type="submit">
+                  <i class="fa fa-search" aria-hidden="true"></i>
+                </button>
+              </form> -->
+                        </ul>
+                    </div>
+                </nav>
+            </div>
+        </header>
+        <!-- end header section -->

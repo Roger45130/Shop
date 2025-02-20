@@ -1,22 +1,76 @@
-<footer class="footer">
-      <div class="container-fluid">
-        <div class="level">
-          <div class="level-left">
-            <div class="level-item">© 2025, Grégory LACROIX</div>
+  <!-- footer start -->
+  <footer class="footer_section">
+    <div class="container">
+      <div class="row">
+        <div class="col-md-4 footer-col">
+          <div class="footer_contact">
+            <h4>Nous trouver..</h4>
+            <div class="contact_link_box">
+              <a href="">
+                <i class="fa fa-map-marker" aria-hidden="true"></i>
+                <span> Coordonnées </span>
+              </a>
+              <a href="">
+                <i class="fa fa-phone" aria-hidden="true"></i>
+                <span> 02 23 45 78 89 </span>
+              </a>
+              <a href="">
+                <i class="fa fa-envelope" aria-hidden="true"></i>
+                <span> demo@gmail.com </span>
+              </a>
+            </div>
+          </div>
+        </div>
+        <div class="col-md-4 footer-col">
+          <div class="footer_detail">
+            <a href="index.php" class="footer-logo"> Famms </a>
+            <p>
+              Nécessaire, ce qui en fait le premier véritable générateur sur Internet.
+              Il utilise un dictionnaire de plus de 200 mots latins, combiné avec
+            </p>
+            <div class="footer_social">
+              <a href="">
+                <i class="fa fa-facebook" aria-hidden="true"></i>
+              </a>
+              <a href="">
+                <i class="fa fa-twitter" aria-hidden="true"></i>
+              </a>
+              <a href="">
+                <i class="fa fa-linkedin" aria-hidden="true"></i>
+              </a>
+              <a href="">
+                <i class="fa fa-instagram" aria-hidden="true"></i>
+              </a>
+              <a href="">
+                <i class="fa fa-pinterest" aria-hidden="true"></i>
+              </a>
+            </div>
+          </div>
+        </div>
+        <div class="col-md-4 footer-col">
+          <div class="map_container">
+            <div class="map">
+              <div id="googleMap"></div>
+            </div>
           </div>
         </div>
       </div>
-    </footer>
-
-    
-
-  <!-- Scripts below are for demo only -->
-  <script type="text/javascript" src="../assets/js/main.min.js"></script>
-
-  <!-- Icons below are for demo only. Feel free to use any icon pack. Docs: https://bulma.io/documentation/elements/icon/ -->
-  <link
-    rel="stylesheet"
-    href="https://cdn.materialdesignicons.com/4.9.95/css/materialdesignicons.min.css" />
+    </div>
+  </footer>
+  <!-- footer end -->
+  <div class="cpy_">
+    <p>
+      © 2025 Tous droits réservés par Grégory LACROIX
+    </p>
+  </div>
+  <!-- jQery -->
+  <script src="assets/js-famma/jquery-3.4.1.min.js"></script>
+  <!-- popper js -->
+  <script src="assets/js-famma/popper.min.js"></script>
+  <!-- bootstrap js -->
+  <script src="assets/js-famma/bootstrap.js"></script>
+  <!-- custom js -->
+  <!-- <script src="assets/js-famma/custom.js"></script> -->
 </body>
 
 </html>
