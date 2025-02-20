@@ -10,18 +10,36 @@ if (!adminConnected()) {
   exit();
 }
 
+// Traitement des formulaires
+$editing = false;
+if ($_SERVER['REQUEST_METHOD'] === 'POST') {
+  if (isset($_POST['update_role'])) {
+    $userId = $_POST['user_id'];
+    $newRole = $_POST['roles'];
+    // Mise à jour du rôle dans la base de données
+    $updateQuery = $connect_db->prepare("UPDATE `user` SET roles = ? WHERE id_user = ?");
+    $updateQuery->execute([$newRole, $userId]);
+    $editing = false;
+  } elseif (isset($_POST['edit_user'])) {
+    $editing = true;
+    $editUserId = $_POST['edit_user'];
+    $stmt = $connect_db->prepare("SELECT roles FROM `user` WHERE id_user = ?");
+    $stmt->execute([$editUserId]);
+    $userToEdit = $stmt->fetch(PDO::FETCH_ASSOC);
+    $currentRole = $userToEdit['roles'];
+  }
+}
+
 // Récupération des utilisateurs ayant le rôle "user"
 $usersData = $connect_db->prepare("SELECT id_user, password, firstName, lastName, email, address, zipcode, city, roles FROM `user` WHERE roles = ?");
 $usersData->execute(['user']);
 $users = $usersData->fetchAll(PDO::FETCH_ASSOC);
-$nbUsers = $usersData->rowCount();
 $userCount = count($users);
 
 // Récupération des utilisateurs ayant le rôle "admin"
 $adminsData = $connect_db->prepare("SELECT id_user, password, firstName, lastName, email, address, zipcode, city, roles FROM `user` WHERE roles = ?");
 $adminsData->execute(['admin']);
 $admins = $adminsData->fetchAll(PDO::FETCH_ASSOC);
-$nbAdmins = $adminsData->rowCount();
 $adminCount = count($admins);
 
 require_once('include/header.php');
@@ -83,9 +101,12 @@ require_once('include/header.php');
                   <td><?= htmlspecialchars($user['roles']) ?></td>
                   <td class="is-actions-cell">
                     <div class="buttons is-right">
-                      <button class="button is-small is-primary" type="button">
-                        <span class="icon"><i class="mdi mdi-pencil mdi-18px"></i></span>
-                      </button>
+                      <form method="post">
+                        <input type="hidden" name="edit_user" value="<?= htmlspecialchars($user['id_user']) ?>">
+                        <button class="button is-small is-primary" type="submit">
+                          <span class="icon"><i class="mdi mdi-pencil mdi-18px"></i></span>
+                        </button>
+                      </form>
                     </div>
                   </td>
                 </tr>
@@ -139,9 +160,12 @@ require_once('include/header.php');
                   <td><?= htmlspecialchars($admin['roles']) ?></td>
                   <td class="is-actions-cell">
                     <div class="buttons is-right">
-                      <button class="button is-small is-primary" type="button">
-                        <span class="icon"><i class="mdi mdi-pencil mdi-18px"></i></span>
-                      </button>
+                      <form method="post">
+                        <input type="hidden" name="edit_user" value="<?= htmlspecialchars($admin['id_user']) ?>">
+                        <button class="button is-small is-primary" type="submit">
+                          <span class="icon"><i class="mdi mdi-pencil mdi-18px"></i></span>
+                        </button>
+                      </form>
                     </div>
                   </td>
                 </tr>
@@ -154,45 +178,49 @@ require_once('include/header.php');
   </div>
 </section>
 
-<section class="section is-main-section">
-  <div class="card">
-    <header class="card-header">
-      <p class="card-header-title">
-        <span class="icon"><i class="mdi mdi-ballot"></i></span>
-        Modification utilisateur
-      </p>
-    </header>
-    <div class="field-body">
-      <div class="field is-narrow">
-        <div class="control">
-          <div class="select is-fullwidth">
-            <select name="roles">
-              <option value="user">user</option>
-              <option value="admin">admin</option>
-            </select>
-          </div>
-        </div>
-      </div>
-      <hr />
-      <div class="field is-horizontal">
-        <div class="field-label">
-        </div>
+<?php if ($editing): ?>
+  <section class="section is-main-section">
+    <div class="card">
+      <header class="card-header">
+        <p class="card-header-title">
+          <span class="icon"><i class="mdi mdi-ballot"></i></span>
+          Modification utilisateur
+        </p>
+      </header>
+      <form method="post">
+        <input type="hidden" name="user_id" value="<?= htmlspecialchars($editUserId) ?>">
         <div class="field-body">
-          <div class="field">
-            <div class="field is-grouped">
-              <div class="control">
-                <button type="submit" class="button is-primary">
-                  <span>Valider</span>
-                </button>
+          <div class="field is-narrow">
+            <div class="control">
+              <div class="select is-fullwidth">
+                <select name="roles">
+                  <option value="user" <?= (isset($currentRole) && $currentRole == 'user') ? 'selected' : '' ?>>user</option>
+                  <option value="admin" <?= (isset($currentRole) && $currentRole == 'admin') ? 'selected' : '' ?>>admin</option>
+                </select>
+              </div>
+            </div>
+          </div>
+          <hr />
+          <div class="field is-horizontal">
+            <div class="field-label">
+            </div>
+            <div class="field-body">
+              <div class="field">
+                <div class="field is-grouped">
+                  <div class="control">
+                    <button type="submit" name="update_role" class="button is-primary">
+                      <span>Valider</span>
+                    </button>
+                  </div>
+                </div>
               </div>
             </div>
           </div>
         </div>
-      </div>
       </form>
     </div>
-  </div>
-</section>
+  </section>
+<?php endif; ?>
 
 <?php
 require_once('include/footer.php');
