@@ -190,6 +190,7 @@ require_once('include/header.php');
       </div>
       <div class="form-group">
         <label>Notation :</label>
+        <!-- organisation des étoiles -->
         <div id="star-icon" style="cursor: pointer;">
           <span class="star" data-value="1" style="color: orange; font-size:24px;"><i class="fa-regular fa-star"></i></span>
           <span class="star" data-value="2" style="color: orange; font-size:24px;"><i class="fa-regular fa-star"></i></span>
