@@ -62,6 +62,7 @@ CREATE TABLE `testimonial` (
   message LONGTEXT NOT NULL,
   date DATETIME NOT NULL,
   user_id INT(11) NOT NULL,
+  product_id int(11) DEFAULT NULL,
   icon VARCHAR(255) NOT NULL,
   PRIMARY KEY (id_testimonial)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
