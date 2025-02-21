@@ -141,9 +141,9 @@ require_once('include/header.php');
       <div class="col-sm-6 col-md-4 col-lg-3">
         <div class="card">
           <div class="card-body">
-            <h5 class="card-title"><?= htmlspecialchars($testimonial['lastName']) . ' ' . htmlspecialchars($testimonial['firstName']) ?></h5>
+            <h5 class="card-title"><?= ($testimonial['lastName']) . ' ' . ($testimonial['firstName']) ?></h5>
             <h6 class="card-subtitle mb-2 text-muted"><?= $dateFr ?></h6>
-            <p class="card-text"><?= htmlspecialchars($testimonial['message']) ?></p>
+            <p class="card-text"><?= ($testimonial['message']) ?></p>
             <div class="card-text">
               <?php
               for ($i = 0; $i < $fullStars; $i++) {
